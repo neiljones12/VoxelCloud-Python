@@ -1,28 +1,10 @@
-from flask import Flask
-import os
-
-import psycopg2
-
-host = os.getenv('HOST')
-dbname = os.getenv('dbname')
-user = os.getenv('user')
-password = os.getenv('password')
-
-
-conn_string = "host="+host+" dbname="+dbname+" user="+user+" password="+password
-conn = psycopg2.connect(conn_string)
+from flask import Flask, current_app
+from config import db_context
 
 app = Flask(__name__)
 
-@app.route("/")
+# Index route.
+# Displays API documentation by returning a static html.
+@app.route('/')
 def index():
-    cur = conn.cursor()
-    cur.execute('SELECT * FROM public."Customers"')
-    rows = cur.fetchall()
-    print(rows)
-
-    return "<h1>TEST<h1>"
-
-
-if __name__ == '__main__':
-    app.run(debug=True)
+    return current_app.send_static_file('index.html')
