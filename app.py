@@ -37,8 +37,8 @@ def read():
 
     # Checking to see if we recieve any data
     if(result_set == []):
-        # Return the 404 not found status code if there is no product matching the mac and serial number
-        abort(404)
+        # Returning the HTTP code 204 because the server successfully processed the request, but is not returning any content.
+        return ('', 204)
 
     colnames = [desc[0] for desc in cur.description]
     product = result_set[0]
@@ -90,8 +90,8 @@ def write():
     result_set = cur.fetchall()
 
     if (result_set == []):
-        # Return the 404 not found status code if there is no product matching the mac and serial number
-        abort(404)
+        # Returning the HTTP code 204 because the server successfully processed the request, but is not returning any content.
+        return ('', 204)
     
     Compressor_status = str(json_data["comp_status"])
     Fan_status = str(json_data["fan_status"])
@@ -101,8 +101,12 @@ def write():
     update_query = 'UPDATE public."Products" SET "Compressor_status"='+Compressor_status+', "Fan_status"='+Fan_status+', "Temperature_alert"='+Temperature_alert+', "Temperature"='+Temperature+' WHERE "MacAddress" = '+mac+' AND "SerialNumber" = '+serial
 
     cur.execute(update_query)
+
+    # Return HTTP status code 400 Bad Request for an unsuccessful PUT
+    if(cur.rowcount != 1):
+        abort(400)
     
-    return str(cur.rowcount)
+    return ('', 200)
 
 # Function to return the compressor status
 def conpressor_status_display(status):
