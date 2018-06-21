@@ -8,11 +8,21 @@ app = Flask(__name__)
 # Displays API documentation by returning a static html.
 @app.route('/')
 def index():
-    return current_app.send_static_file('apiary.apib')
+    return current_app.send_static_file('index.html')
 
-@app.route('/read', methods=['GET'])
+@app.route('/read', methods=['GET', 'POST'])
 def read():
-    if not request.json:
-        abort(400)
-    print (request.json)
-    return json.dumps(request.json)
+    data = request.data
+    json_data = json.loads(data)
+    
+    mac = json_data["mac"]
+    serial = json_data["serial"]
+    
+    print("mac: ", mac) 
+    print("serial: ", serial) 
+
+    cur = db_context.cursor()
+    cur.execute('SELECT * FROM public."Customers"')
+    rows = cur.fetchall()
+    #print(rows)
+    return json.dumps(rows)

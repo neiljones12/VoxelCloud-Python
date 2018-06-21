@@ -12,7 +12,3 @@ conn_string = "host="+host+" dbname="+dbname+" user="+user+" password="+password
 db_context = psycopg2.connect(conn_string)
 
 
-#cur = db_context.cursor()
-#cur.execute('SELECT * FROM public."Customers"')
-#rows = cur.fetchall()
-#print(rows)
