@@ -1,8 +1,10 @@
 from flask import Flask, current_app, abort, request
 from flask_api import status
-from config import db_context
 import time
 import json
+import os
+import sys
+import psycopg2
 
 app = Flask(__name__)
 
@@ -25,7 +27,8 @@ def read():
     serial =  "'" +json_data["serial"]+ "'"
 
     # Appending the paramters to the query string
-    query = 'SELECT * FROM public."Products" WHERE "MacAddress" = '+mac+' AND "SerialNumber" = '+serial
+    query = 'SELECT * FROM public."Products" WHERE "Mac_Address" = '+mac+' AND "Serial_Number" = '+serial
+    db_context = open_connection()
     cur = db_context.cursor()
 
     # Executing the query
@@ -38,6 +41,7 @@ def read():
     # Checking to see if we recieve any data
     if(result_set == []):
         # Returning the HTTP code 204 because the server successfully processed the request, but is not returning any content.
+        close_connection(cur, db_context)
         return ('', 204)
 
     colnames = [desc[0] for desc in cur.description]
@@ -65,7 +69,8 @@ def read():
     # calculating the delay in milliseconds
     end = int(round(time.time() * 1000))
     response['delay'] = end - start #Delay in milli-seconds after the event.
-
+    
+    close_connection(cur, db_context)
     # Return the JSON object and the Http 200 status to show a succucc status
     return json.dumps(response),status.HTTP_200_OK
 
@@ -80,7 +85,9 @@ def write():
     serial =  "'" +json_data["serial"]+ "'"
 
     # Appending the paramters to the query string
-    query = 'SELECT * FROM public."Products" WHERE "MacAddress" = '+mac+' AND "SerialNumber" = '+serial
+    query = 'SELECT * FROM public."Products" WHERE "Mac_Address" = '+mac+' AND "Serial_Number" = '+serial
+    
+    db_context = open_connection()
     cur = db_context.cursor()
 
     # Executing the query
@@ -91,21 +98,28 @@ def write():
 
     if (result_set == []):
         # Returning the HTTP code 204 because the server successfully processed the request, but is not returning any content.
+        close_connection(cur, db_context)
         return ('', 204)
     
     Compressor_status = str(json_data["comp_status"])
     Fan_status = str(json_data["fan_status"])
     Temperature_alert = str(json_data["temp_alert"])
     Temperature = str(json_data["temp"])
+    Timestamp = str(time.strftime("%H:%M:%S"))
+    Mac_Address = json_data["mac"]
+    Serial_Number = json_data["serial"]
 
-    update_query = 'UPDATE public."Products" SET "Compressor_status"='+Compressor_status+', "Fan_status"='+Fan_status+', "Temperature_alert"='+Temperature_alert+', "Temperature"='+Temperature+' WHERE "MacAddress" = '+mac+' AND "SerialNumber" = '+serial
+    #update_query = 'UPDATE public."Products" SET "Compressor_status"='+Compressor_status+', "Fan_status"='+Fan_status+', "Temperature_alert"='+Temperature_alert+', "Temperature"='+Temperature+', "Timestamp"='+Timestamp+' WHERE "Mac_Address" = '+mac+' AND "Serial_Number" = '+serial
 
-    cur.execute(update_query)
+    cur.execute('UPDATE public."Products" SET "Compressor_status"=%s, "Fan_status"=%s, "Temperature_alert"=%s, "Temperature"=%s, "Timestamp"=%s WHERE "Mac_Address" = %s AND "Serial_Number" = %s', (Compressor_status,Fan_status,Temperature_alert,Temperature,Timestamp,Mac_Address,Serial_Number))
+    db_context.commit()
+    #cur.execute(update_query)
 
+    close_connection(cur, db_context)
     # Return HTTP status code 400 Bad Request for an unsuccessful PUT
-    if(cur.rowcount != 1):
-        abort(400)
-    
+    #if(cur.rowcount != 1):
+    #    abort(400)
+
     return ('', 200)
 
 # Function to return the compressor status
@@ -133,3 +147,27 @@ def write_freq_display(status):
         result = 'Seconds power sampling / reporting'
 
     return result
+
+def open_connection():
+    #import the configuration via enviornment variables
+    host = os.getenv('HOST')
+    dbname = os.getenv('dbname')
+    user = os.getenv('user')
+    password = os.getenv('password')
+    conn_string = "host="+host+" dbname="+dbname+" user="+user+" password="+password
+
+    #connect to the database
+
+    try:
+        db_context = psycopg2.connect(conn_string)
+    except psycopg2.OperationalError as e:
+        print('Unable to connect to HVAC!\n{0}').format(e)
+        sys.exit(1)
+    else:
+        print('Connected to HVAC!')
+    return db_context
+
+def close_connection(cur, conn):
+    print('Disconnected to HVAC!')
+    cur.close()
+    conn.close()
