@@ -1,4 +1,5 @@
 from flask import Flask, current_app, abort, request
+from flask_api import status
 from config import db_context
 import time
 import json
@@ -35,12 +36,15 @@ def read():
     result = []
 
     # Checking to see if we recieve any data
-    if(result_set != []):
-        colnames = [desc[0] for desc in cur.description]
-        product = result_set[0]
+    if(result_set == []):
+        # Return the 404 not found status code if there is no product matching the mac and serial number
+        abort(404)
 
-        # Saving the result as a key, value pair
-        result = dict(zip(colnames,product))
+    colnames = [desc[0] for desc in cur.description]
+    product = result_set[0]
+
+    # Saving the result as a key, value pair
+    result = dict(zip(colnames,product))
 
     response = {}
     response['comm_freq'] = result['Communication_Frequency']
@@ -62,8 +66,43 @@ def read():
     end = int(round(time.time() * 1000))
     response['delay'] = end - start #Delay in milli-seconds after the event.
 
-    return json.dumps(response)
+    # Return the JSON object and the Http 200 status to show a succucc status
+    return json.dumps(response),status.HTTP_200_OK
 
+
+@app.route('/write', methods=['PUT'])
+def write():
+    data = request.data
+    json_data = json.loads(data)
+    
+    # Saving the parameters as string
+    mac = "'" + json_data["mac"] + "'"
+    serial =  "'" +json_data["serial"]+ "'"
+
+    # Appending the paramters to the query string
+    query = 'SELECT * FROM public."Products" WHERE "MacAddress" = '+mac+' AND "SerialNumber" = '+serial
+    cur = db_context.cursor()
+
+    # Executing the query
+    cur.execute(query)
+
+    # Fetching the result
+    result_set = cur.fetchall()
+
+    if (result_set == []):
+        # Return the 404 not found status code if there is no product matching the mac and serial number
+        abort(404)
+    
+    Compressor_status = str(json_data["comp_status"])
+    Fan_status = str(json_data["fan_status"])
+    Temperature_alert = str(json_data["temp_alert"])
+    Temperature = str(json_data["temp"])
+
+    update_query = 'UPDATE public."Products" SET "Compressor_status"='+Compressor_status+', "Fan_status"='+Fan_status+', "Temperature_alert"='+Temperature_alert+', "Temperature"='+Temperature+' WHERE "MacAddress" = '+mac+' AND "SerialNumber" = '+serial
+
+    cur.execute(update_query)
+    
+    return str(cur.rowcount)
 
 # Function to return the compressor status
 def conpressor_status_display(status):
