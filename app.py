@@ -37,8 +37,6 @@ def read():
     else:
         test = False
 
-    print(test)
-
     # Appending the paramters to the query string
     query = 'SELECT * FROM public."Products" WHERE "Mac_Address" = '+mac+' AND "Serial_Number" = '+serial
     db_context = open_connection(test)
@@ -78,8 +76,8 @@ def read():
         response['time'] = time.strftime("%H:%M:%S") #current time
     
     response['reporting_url'] = result['Reporting_Url'] #url to report to. (If change, update Chip)
-    response['mac'] = mac
-    response['serial'] = serial
+    response['mac'] = json_data["mac"]
+    response['serial'] = json_data["serial"]
     
     # calculating the delay in milliseconds
     end = int(round(time.time() * 1000))
@@ -105,8 +103,6 @@ def write():
         test = json_data["test"]
     else:
         test = False
-        
-    print(test)
 
     # Appending the paramters to the query string
     query = 'SELECT * FROM public."Products" WHERE "Mac_Address" = '+mac+' AND "Serial_Number" = '+serial
@@ -157,8 +153,6 @@ def write_immediate():
         test = json_data["test"]
     else:
         test = False
-        
-    print(test)
 
     # Appending the paramters to the query string
     query = 'SELECT * FROM public."Products" WHERE "Mac_Address" = '+mac+' AND "Serial_Number" = '+serial
@@ -235,8 +229,6 @@ def view():
         test = json_data["test"]
     else:
         test = False
-        
-    print(test)
 
     # Appending the paramters to the query string
     query = 'SELECT * FROM public."Products" WHERE "Mac_Address" = '+mac+' AND "Serial_Number" = '+ serial
@@ -277,17 +269,16 @@ def view():
     customer = result_set_customer[0]
     result_customer = dict(zip(colnames_customer,customer))
 
-    print(result_customer)
     # Saving the result as a key, value pair
-    
-
     response = {}
     response['Ip_Address'] = result['Ip_Address']
-    response['Mac_Address'] = result['Mac_Address']
-    response['Serial_Number'] = result['Serial_Number']
-    response['Timestamp'] = result['Timestamp']
-    response['Communication_Frequency'] = result['Communication_Frequency']
+    response['Mac_Address'] = json_data["mac"]
+    response['Serial_Number'] = json_data["serial"]
 
+    if (not test):
+        response['Timestamp'] = str(time.strftime("%H:%M:%S"))
+    
+    response['Communication_Frequency'] = result['Communication_Frequency']
     response['Customer_Id'] = result_customer['CustomerId']
     response['Customer_Number'] = result_customer['Customer_Number']
     response['Location_Name'] = result_customer['Name']
@@ -330,16 +321,18 @@ def write_freq_display(status):
 def open_connection(test):
     #import the configuration via enviornment variables
     host = os.getenv('HOST')
-
-    if(test):
-        dbname = os.getenv('dbname')
-    else:
-        dbname = os.getenv('dbname_test')
     
+    if(test):
+        database = 'HVAC_Test'
+        dbname = os.getenv('dbname_test')
+    else:
+        database = 'HVAC'
+        dbname = os.getenv('dbname')
+
     user = os.getenv('user')
     password = os.getenv('password')
     conn_string = "host="+host+" dbname="+dbname+" user="+user+" password="+password
-
+    
     #connect to the database
 
     try:
@@ -348,10 +341,10 @@ def open_connection(test):
         print('Unable to connect to HVAC!\n{0}').format(e)
         sys.exit(1)
     else:
-        print('Connected to HVAC!')
+        print('Connected to ',database)
     return db_context
 
 def close_connection(cur, conn):
-    print('Disconnected from HVAC!')
+    print('Disconnected from database')
     cur.close()
     conn.close()
