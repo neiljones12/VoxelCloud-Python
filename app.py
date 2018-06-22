@@ -200,7 +200,7 @@ def view():
     # Saving the parameters as string
     mac = "'" + json_data["mac"] + "'"
     serial =  "'" +json_data["serial"]+ "'"
-    customer_Id =  "'" +json_data["customer_Id"]+ "'"
+    customer_Id =  "'" + str(json_data["customer_Id"]) + "'"
 
     # Appending the paramters to the query string
     query = 'SELECT * FROM public."Products" WHERE "Mac_Address" = '+mac+' AND "Serial_Number" = '+ serial
@@ -222,9 +222,28 @@ def view():
 
     colnames = [desc[0] for desc in cur.description]
     product = result_set[0]
-
-    # Saving the result as a key, value pair
     result = dict(zip(colnames,product))
+
+    query_customer = 'select * from public."Customers" c, public."CustomerLocations" cl, public."Locations" l where c."Id" = cl."CustomerId" and l."Id" = cl."LocationId" and c."Id" = '+customer_Id
+    # Executing the query
+    cur.execute(query_customer)
+
+    # Fetching the result
+    result_set_customer = cur.fetchall()
+    result_customer = []
+
+    if(result_set_customer == []):
+        # Returning the HTTP code 204 because the server successfully processed the request, but is not returning any content.
+        close_connection(cur, db_context)
+        return ('', 204)
+
+    colnames_customer = [desc[0] for desc in cur.description]
+    customer = result_set_customer[0]
+    result_customer = dict(zip(colnames_customer,customer))
+
+    print(result_customer)
+    # Saving the result as a key, value pair
+    
 
     response = {}
     response['Ip_Address'] = result['Ip_Address']
@@ -232,6 +251,10 @@ def view():
     response['Serial_Number'] = result['Serial_Number']
     response['Timestamp'] = result['Timestamp']
     response['Communication_Frequency'] = result['Communication_Frequency']
+
+    response['Customer_Id'] = result_customer['CustomerId']
+    response['Customer_Number'] = result_customer['Customer_Number']
+    response['Location_Name'] = result_customer['Name']
     
     
     close_connection(cur, db_context)
