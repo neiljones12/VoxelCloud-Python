@@ -30,9 +30,17 @@ def read():
     mac = "'" + json_data["mac"] + "'"
     serial =  "'" +json_data["serial"]+ "'"
 
+    # Checking to see if the test value is passed to the API, If test is true, the testing database is used
+    if "test" in json_data:
+        test = json_data["test"]
+    else:
+        test = False
+
+    print(test)
+
     # Appending the paramters to the query string
     query = 'SELECT * FROM public."Products" WHERE "Mac_Address" = '+mac+' AND "Serial_Number" = '+serial
-    db_context = open_connection()
+    db_context = open_connection(test)
     cur = db_context.cursor()
 
     # Executing the query
@@ -88,10 +96,18 @@ def write():
     mac = "'" + json_data["mac"] + "'"
     serial =  "'" +json_data["serial"]+ "'"
 
+    # Checking to see if the test value is passed to the API, If test is true, the testing database is used
+    if "test" in json_data:
+        test = json_data["test"]
+    else:
+        test = False
+        
+    print(test)
+
     # Appending the paramters to the query string
     query = 'SELECT * FROM public."Products" WHERE "Mac_Address" = '+mac+' AND "Serial_Number" = '+serial
     
-    db_context = open_connection()
+    db_context = open_connection(test)
     cur = db_context.cursor()
 
     # Executing the query
@@ -132,10 +148,18 @@ def write_immediate():
     mac = "'" + json_data["mac"] + "'"
     serial =  "'" +json_data["serial"]+ "'"
 
+    # Checking to see if the test value is passed to the API, If test is true, the testing database is used
+    if "test" in json_data:
+        test = json_data["test"]
+    else:
+        test = False
+        
+    print(test)
+
     # Appending the paramters to the query string
     query = 'SELECT * FROM public."Products" WHERE "Mac_Address" = '+mac+' AND "Serial_Number" = '+serial
     
-    db_context = open_connection()
+    db_context = open_connection(test)
     cur = db_context.cursor()
 
     # Executing the query
@@ -192,7 +216,7 @@ def write_immediate():
 # View API
 @app.route('/view', methods=['GET'])
 def view():
-    start = int(round(time.time() * 1000))
+
     # Reading the parameters from the body
     data = request.data
     json_data = json.loads(data)
@@ -202,9 +226,17 @@ def view():
     serial =  "'" +json_data["serial"]+ "'"
     customer_Id =  "'" + str(json_data["customer_Id"]) + "'"
 
+    # Checking to see if the test value is passed to the API, If test is true, the testing database is used
+    if "test" in json_data:
+        test = json_data["test"]
+    else:
+        test = False
+        
+    print(test)
+
     # Appending the paramters to the query string
     query = 'SELECT * FROM public."Products" WHERE "Mac_Address" = '+mac+' AND "Serial_Number" = '+ serial
-    db_context = open_connection()
+    db_context = open_connection(test)
     cur = db_context.cursor()
 
     # Executing the query
@@ -261,9 +293,6 @@ def view():
     # Return the JSON object and the Http 200 status to show a succucc status
     return json.dumps(response),status.HTTP_200_OK
 
-
-
-
 ####################################
 ## Below are the Helper Functions ##
 ####################################
@@ -294,10 +323,15 @@ def write_freq_display(status):
 
     return result
 
-def open_connection():
+def open_connection(test):
     #import the configuration via enviornment variables
     host = os.getenv('HOST')
-    dbname = os.getenv('dbname')
+
+    if(test):
+        dbname = os.getenv('dbname')
+    else:
+        dbname = os.getenv('dbname_test')
+    
     user = os.getenv('user')
     password = os.getenv('password')
     conn_string = "host="+host+" dbname="+dbname+" user="+user+" password="+password
@@ -314,6 +348,6 @@ def open_connection():
     return db_context
 
 def close_connection(cur, conn):
-    print('Disconnected to HVAC!')
+    print('Disconnected from HVAC!')
     cur.close()
     conn.close()
