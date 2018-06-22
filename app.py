@@ -14,6 +14,10 @@ app = Flask(__name__)
 def index():
     return current_app.send_static_file('index.html')
 
+####################################
+##         API Methods            ##
+####################################
+
 # Read API
 @app.route('/read', methods=['GET'])
 def read():
@@ -116,11 +120,130 @@ def write():
     #cur.execute(update_query)
 
     close_connection(cur, db_context)
-    # Return HTTP status code 400 Bad Request for an unsuccessful PUT
-    #if(cur.rowcount != 1):
-    #    abort(400)
-
     return ('', 200)
+
+
+@app.route('/write_immediate', methods=['PUT'])
+def write_immediate():
+    data = request.data
+    json_data = json.loads(data)
+    
+    # Saving the parameters as string
+    mac = "'" + json_data["mac"] + "'"
+    serial =  "'" +json_data["serial"]+ "'"
+
+    # Appending the paramters to the query string
+    query = 'SELECT * FROM public."Products" WHERE "Mac_Address" = '+mac+' AND "Serial_Number" = '+serial
+    
+    db_context = open_connection()
+    cur = db_context.cursor()
+
+    # Executing the query
+    cur.execute(query)
+
+    # Fetching the result
+    result_set = cur.fetchall()
+
+    if (result_set == []):
+        # Returning the HTTP code 204 because the server successfully processed the request, but is not returning any content.
+        close_connection(cur, db_context)
+        return ('', 204)
+    
+    colnames = [desc[0] for desc in cur.description]
+    product = result_set[0]
+    # Saving the result as a key, value pair
+    result = dict(zip(colnames,product))
+    Product_Id = str(result['Id'])
+
+    query = 'SELECT * FROM public."ProductEvents" WHERE "ProductId" = '+Product_Id+''
+    # Executing the query
+    cur.execute(query)
+
+    # Fetching the result
+    result_set = cur.fetchall()
+
+    # Checking if a value matching the product id exists in the ProductEvents table
+    # Modeling the query to insert or update based on the value of the isExist flag
+    isExist = True
+    if (result_set == []):
+        isExist = False
+
+    status_at_event_comp = str(json_data["status_at_event_comp"])
+    status_at_event_fan = str(json_data["status_at_event_fan"])
+    status_after_event_comp = str(json_data["status_after_event_comp"])
+    status_after_event_fan = str(json_data["status_after_event_fan"])
+    restart_chk_comp = str(json_data["restart_chk_comp"])
+    restart_chk_fan = str(json_data["restart_chk_fan"])
+    Timestamp = str(time.strftime("%H:%M:%S"))
+
+    
+    # A value exists, so we will run an update query
+    if(isExist):
+        cur.execute('UPDATE public."ProductEvents" SET "Status_At_Event_Compressor"=%s, "Status_At_Event_Fan"=%s, "Status_After_Event_Compressor"=%s, "Status_After_Event_Fan"=%s, "Restart_Check_Compressor"=%s, "Restart_Check_Fan"=%s, "Timestamp"=%s WHERE "ProductId" = %s', (status_at_event_comp, status_at_event_fan, status_after_event_comp, status_after_event_fan, restart_chk_comp, restart_chk_fan, Timestamp, Product_Id))
+    # A value does not exist, so we will run an insert query
+    else:
+        cur.execute('INSERT INTO public."ProductEvents" ("ProductId", "Status_At_Event_Compressor", "Status_At_Event_Fan", "Status_After_Event_Compressor", "Status_After_Event_Fan", "Restart_Check_Compressor", "Restart_Check_Fan", "Timestamp") VALUES (%s, %s, %s, %s, %s, %s, %s, %s)', (Product_Id, status_at_event_comp, status_at_event_fan, status_after_event_comp, status_after_event_fan, restart_chk_comp, restart_chk_fan, Timestamp))
+
+    db_context.commit()
+    close_connection(cur, db_context)
+    return ('', 200)
+
+
+# View API
+@app.route('/view', methods=['GET'])
+def view():
+    start = int(round(time.time() * 1000))
+    # Reading the parameters from the body
+    data = request.data
+    json_data = json.loads(data)
+    
+    # Saving the parameters as string
+    mac = "'" + json_data["mac"] + "'"
+    serial =  "'" +json_data["serial"]+ "'"
+    customer_Id =  "'" +json_data["customer_Id"]+ "'"
+
+    # Appending the paramters to the query string
+    query = 'SELECT * FROM public."Products" WHERE "Mac_Address" = '+mac+' AND "Serial_Number" = '+ serial
+    db_context = open_connection()
+    cur = db_context.cursor()
+
+    # Executing the query
+    cur.execute(query)
+
+    # Fetching the result
+    result_set = cur.fetchall()
+    result = []
+
+    # Checking to see if we recieve any data
+    if(result_set == []):
+        # Returning the HTTP code 204 because the server successfully processed the request, but is not returning any content.
+        close_connection(cur, db_context)
+        return ('', 204)
+
+    colnames = [desc[0] for desc in cur.description]
+    product = result_set[0]
+
+    # Saving the result as a key, value pair
+    result = dict(zip(colnames,product))
+
+    response = {}
+    response['Ip_Address'] = result['Ip_Address']
+    response['Mac_Address'] = result['Mac_Address']
+    response['Serial_Number'] = result['Serial_Number']
+    response['Timestamp'] = result['Timestamp']
+    response['Communication_Frequency'] = result['Communication_Frequency']
+    
+    
+    close_connection(cur, db_context)
+    # Return the JSON object and the Http 200 status to show a succucc status
+    return json.dumps(response),status.HTTP_200_OK
+
+
+
+
+####################################
+## Below are the Helper Functions ##
+####################################
 
 # Function to return the compressor status
 def conpressor_status_display(status):
