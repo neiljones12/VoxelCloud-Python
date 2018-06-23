@@ -7,6 +7,7 @@ import json
 url = 'http://127.0.0.1:5000/'
 
 class TestFunctions(unittest.TestCase):
+    # Testing the Read API with valid inputs
     def test_read(self):
         read_api = url + 'read'
 
@@ -25,6 +26,22 @@ class TestFunctions(unittest.TestCase):
 
         self.maxDiff = None
         self.assertEqual(data,check)
+
+    # Testing the Read API with invalid inputs
+    def test_read_invalid(self):
+        read_api = url + 'read'
+
+        parameters = {
+                    "mac" : "00",
+                    "serial": "1",
+                    "test": True
+                }
+
+        data = requests.get(url = read_api, data = json.dumps(parameters))
+        expected_output = '<Response [204]>'
+        
+        self.maxDiff = None
+        self.assertEqual(str(data),expected_output)
 
     def test_view(self):
         read_api = url + 'view'
@@ -59,6 +76,22 @@ class TestFunctions(unittest.TestCase):
         self.maxDiff = None
         self.assertEqual(data,check)
 
+
+    # Testing the View API with invalid inputs
+    def test_view_invalid(self):
+        read_api = url + 'view'
+
+        parameters = {
+                    "customer_Id" : "0"
+                }
+                
+        data = requests.get(url = read_api, data = json.dumps(parameters))
+        expected_output = '<Response [204]>'
+        
+        self.maxDiff = None
+        self.assertEqual(str(data),expected_output)
+
+    # Testing the view_product API with valid inputs
     def test_view_product(self):
         read_api = url + 'view_product'
 
@@ -92,6 +125,20 @@ class TestFunctions(unittest.TestCase):
 
         self.maxDiff = None
         self.assertEqual(data,check)
+
+    # Testing the view_product API with invalid inputs
+    def test_view_product_invalid(self):
+        read_api = url + 'view_product'
+
+        parameters = {
+                    "customer_Id" : "0"
+                }
+                
+        data = requests.get(url = read_api, data = json.dumps(parameters))
+        expected_output = '<Response [204]>'
+        
+        self.maxDiff = None
+        self.assertEqual(str(data),expected_output)
 
 if __name__ == '__main__':
     unittest.main()
