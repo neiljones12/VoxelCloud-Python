@@ -210,30 +210,28 @@ def write_immediate():
     close_connection(cur, db_context)
     return ('', 200)
 
-
-# View API
-@app.route('/view', methods=['GET'])
+# View Product API
+@app.route('/view_product', methods=['GET'])
 def view():
-
     # Reading the parameters from the body
     data = request.data
     json_data = json.loads(data)
     
     # Saving the parameters as string
-    mac = "'" + json_data["mac"] + "'"
-    serial =  "'" +json_data["serial"]+ "'"
-    customer_Id =  "'" + str(json_data["customer_Id"]) + "'"
-
+    customer_Id =  str(json_data["customer_Id"])
+    product_Id =  str(json_data["customer_Id"])
+    
     # Checking to see if the test value is passed to the API, If test is true, the testing database is used
     if "test" in json_data:
         test = json_data["test"]
     else:
         test = False
 
-    # Appending the paramters to the query string
-    query = 'SELECT * FROM public."Products" WHERE "Mac_Address" = '+mac+' AND "Serial_Number" = '+ serial
+    # Opening the connection to the database
     db_context = open_connection(test)
     cur = db_context.cursor()
+
+    query = 'SELECT * FROM public."CustomerProducts" cp, public."Products" p WHERE cp."ProductId" = p."Id" AND cp."CustomerId" = '+customer_Id+' AND p."Id" ='+product_Id
 
     # Executing the query
     cur.execute(query)
@@ -242,48 +240,32 @@ def view():
     result_set = cur.fetchall()
     result = []
 
-    # Checking to see if we recieve any data
     if(result_set == []):
         # Returning the HTTP code 204 because the server successfully processed the request, but is not returning any content.
         close_connection(cur, db_context)
         return ('', 204)
 
     colnames = [desc[0] for desc in cur.description]
-    product = result_set[0]
-    result = dict(zip(colnames,product))
 
-    query_customer = 'select * from public."Customers" c, public."CustomerLocations" cl, public."Locations" l where c."Id" = cl."CustomerId" and l."Id" = cl."LocationId" and c."Id" = '+customer_Id
-    # Executing the query
-    cur.execute(query_customer)
-
-    # Fetching the result
-    result_set_customer = cur.fetchall()
-    result_customer = []
-
-    if(result_set_customer == []):
-        # Returning the HTTP code 204 because the server successfully processed the request, but is not returning any content.
-        close_connection(cur, db_context)
-        return ('', 204)
-
-    colnames_customer = [desc[0] for desc in cur.description]
-    customer = result_set_customer[0]
-    result_customer = dict(zip(colnames_customer,customer))
-
-    # Saving the result as a key, value pair
+    result = dict(zip(colnames,result_set[0]))
     response = {}
-    response['Ip_Address'] = result['Ip_Address']
-    response['Mac_Address'] = json_data["mac"]
-    response['Serial_Number'] = json_data["serial"]
 
-    if (not test):
-        response['Timestamp'] = str(time.strftime("%H:%M:%S"))
-    
-    response['Communication_Frequency'] = result['Communication_Frequency']
-    response['Customer_Id'] = result_customer['CustomerId']
-    response['Customer_Number'] = result_customer['Customer_Number']
-    response['Location_Name'] = result_customer['Name']
-    
-    
+    response['product_details'] ={
+            'Product_Id': result['ProductId'],
+            'Product_Name': result['Name'],
+            'Fan_status': result['Fan_status'],
+            'Temperature_alert': result['Temperature_alert'],
+            'Temperature': result['Temperature'],
+            'Ip_Address': result['Ip_Address'],
+            'Serial_Number': result['Serial_Number'],
+            'Mac_Address': result['Mac_Address'],
+            'Communication_Frequency': result['Communication_Frequency'],
+            'Installation_Date': result['Installation_Date'],
+            'Write_Frequency': result['Write_Frequency'],
+            'Write_Time': result['Write_Time'],
+            'Timestamp': result['Timestamp']
+        }
+
     close_connection(cur, db_context)
     # Return the JSON object and the Http 200 status to show a succucc status
     return json.dumps(response),status.HTTP_200_OK
