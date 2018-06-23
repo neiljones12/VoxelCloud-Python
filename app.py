@@ -323,6 +323,9 @@ def view_product():
     result = dict(zip(colnames,result_set[0]))
     response = {}
 
+    if test:
+        result['Timestamp'] = None
+
     response['product_details'] ={
             'Product_Id': result['ProductId'],
             'Product_Name': result['Name'],

@@ -26,5 +26,72 @@ class TestFunctions(unittest.TestCase):
         self.maxDiff = None
         self.assertEqual(data,check)
 
+    def test_view(self):
+        read_api = url + 'view'
+
+        parameters = {
+                    "customer_Id" : "1"
+                }
+
+        data = requests.get(url = read_api, data = json.dumps(parameters))
+        
+        expected_output = {
+                    "customer_details": {
+                        "Customer_Number": "AA1122",
+                        "Location_Id": 1,
+                        "Location_Name": "Location 1"
+                    },
+                    "customer_products": [
+                        {
+                            "Product_Id": 1,
+                            "Product_Name": "Product 1"
+                        },
+                        {
+                            "Product_Id": 2,
+                            "Product_Name": "Product 2"
+                        }
+                    ]
+                }
+        
+        data = str(data.content,'utf-8')
+        check = json.dumps(expected_output)
+
+        self.maxDiff = None
+        self.assertEqual(data,check)
+
+    def test_view_product(self):
+        read_api = url + 'view_product'
+
+        parameters = {
+                    "customer_Id" : "1",
+	                "product_Id":1
+                }
+
+        data = requests.get(url = read_api, data = json.dumps(parameters))
+        
+        expected_output = {
+                "product_details": {
+                    "Product_Id": 1,
+                    "Product_Name": "Product 1",
+                    "Fan_status": 0,
+                    "Temperature_alert": 0,
+                    "Temperature": 75,
+                    "Ip_Address": "10.0.0.4",
+                    "Serial_Number": "1",
+                    "Mac_Address": "001122334455",
+                    "Communication_Frequency": 24,
+                    "Installation_Date": "6/22/2018",
+                    "Write_Frequency": 10,
+                    "Write_Time": 20,
+                    "Timestamp": None
+                }
+            }
+        
+        data = str(data.content,'utf-8')
+        check = json.dumps(expected_output)
+
+        self.maxDiff = None
+        self.assertEqual(data,check)
+
 if __name__ == '__main__':
     unittest.main()
