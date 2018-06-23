@@ -43,11 +43,13 @@ class TestFunctions(unittest.TestCase):
         self.maxDiff = None
         self.assertEqual(str(data),expected_output)
 
+    # Testing the View API with valid inputs
     def test_view(self):
         read_api = url + 'view'
 
         parameters = {
-                    "customer_Id" : "1"
+                    "customer_Id" : "1",
+                    "test": True
                 }
 
         data = requests.get(url = read_api, data = json.dumps(parameters))
@@ -82,7 +84,8 @@ class TestFunctions(unittest.TestCase):
         read_api = url + 'view'
 
         parameters = {
-                    "customer_Id" : "0"
+                    "customer_Id" : "0",
+                    "test": True
                 }
                 
         data = requests.get(url = read_api, data = json.dumps(parameters))
@@ -97,7 +100,8 @@ class TestFunctions(unittest.TestCase):
 
         parameters = {
                     "customer_Id" : "1",
-	                "product_Id":1
+	                "product_Id":1,
+                    "test": True
                 }
 
         data = requests.get(url = read_api, data = json.dumps(parameters))
@@ -108,7 +112,7 @@ class TestFunctions(unittest.TestCase):
                     "Product_Name": "Product 1",
                     "Fan_status": 0,
                     "Temperature_alert": 0,
-                    "Temperature": 75,
+                    "Temperature": 80,
                     "Ip_Address": "10.0.0.4",
                     "Serial_Number": "1",
                     "Mac_Address": "001122334455",
@@ -131,10 +135,95 @@ class TestFunctions(unittest.TestCase):
         read_api = url + 'view_product'
 
         parameters = {
-                    "customer_Id" : "0"
+                    "customer_Id" : "0",
+                    "test": True
                 }
                 
         data = requests.get(url = read_api, data = json.dumps(parameters))
+        expected_output = '<Response [204]>'
+        
+        self.maxDiff = None
+        self.assertEqual(str(data),expected_output)
+
+    # Testing the write API with valid inputs
+    def test_write(self):
+        read_api = url + 'write'
+
+        parameters = {
+                "comp_status": 1,
+                "fan_status": 0,
+                "temp_alert": 0,
+                "temp": 80,
+                "mac": "001122334455",
+                "serial": "1",
+                "test": True
+            }
+                
+        data = requests.put(url = read_api, data = json.dumps(parameters))
+        expected_output = '<Response [200]>'
+        
+        self.maxDiff = None
+        self.assertEqual(str(data),expected_output)
+
+        # Testing the write API with invalid inputs
+    def test_write_invalid(self):
+        read_api = url + 'write'
+
+        parameters = {
+                "comp_status": 1,
+                "fan_status": 0,
+                "temp_alert": 0,
+                "temp": 80,
+                "mac": "001122334455",
+                "serial": "0",
+                "test": True
+            }
+                
+        data = requests.put(url = read_api, data = json.dumps(parameters))
+        expected_output = '<Response [204]>'
+        
+        self.maxDiff = None
+        self.assertEqual(str(data),expected_output)
+
+    # Testing the write_immediate API with valid inputs
+    def test_write_immediate(self):
+        read_api = url + 'write_immediate'
+
+        parameters = {
+                "status_at_event_comp": "0",
+                "status_at_event_fan": "0",
+                "status_after_event_comp": "0",
+                "status_after_event_fan": "0",
+                "restart_chk_comp": "1",
+                "restart_chk_fan": "1",
+                "mac": "001122334455",
+                "serial": "1",
+                "test": True
+            }
+                
+        data = requests.put(url = read_api, data = json.dumps(parameters))
+        expected_output = '<Response [200]>'
+        
+        self.maxDiff = None
+        self.assertEqual(str(data),expected_output)
+
+        # Testing the write_immediate API with invalid inputs
+    def test_write_immediate_invalid(self):
+        read_api = url + 'write_immediate'
+
+        parameters = {
+                "status_at_event_comp": "0",
+                "status_at_event_fan": "0",
+                "status_after_event_comp": "0",
+                "status_after_event_fan": "0",
+                "restart_chk_comp": "1",
+                "restart_chk_fan": "1",
+                "mac": "001122334455",
+                "serial": "0",
+                "test": True
+            }
+                
+        data = requests.put(url = read_api, data = json.dumps(parameters))
         expected_output = '<Response [204]>'
         
         self.maxDiff = None
