@@ -236,6 +236,98 @@
         </div>
       </div>
 
+      <br>
+
+      <div class="card">
+          <div class="card-header">
+            View API
+          </div>
+          <div class="card-body">
+            <class="card-text"> API Endpoint:
+              <span style="color:#00a8ff">https://voxelcloud-demo-python.herokuapp.com/view</span>
+              </p>
+              <class="card-text"> API Type:
+                <span style="color:#00a8ff">GET</span>
+                </p>
+                <p>Expected data to be passed in the body of the request</p>
+    
+                <table class="table">
+                  <thead class="thead-light">
+                    <tr>
+                      <th scope="col">paramerter</th>
+                      <th scope="col">Description</th>
+                      <th scope="col">Accepted values</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <th scope="row">customer_Id</th>
+                      <td>Customer Id</td>
+                      <td>Integer</td>
+                    </tr>
+                  </tbody>
+                </table>
+    
+                <hr>
+                <p>An example of the body of the request</p>
+                <code>
+                    {
+                      "customer_Id": 1
+                    }
+                    </code>
+          </div>
+        </div>
+    
+        <br>
+
+        <div class="card">
+            <div class="card-header">
+                view_product API
+            </div>
+            <div class="card-body">
+              <class="card-text"> API Endpoint:
+                <span style="color:#00a8ff">https://voxelcloud-demo-python.herokuapp.com/view_product</span>
+                </p>
+                <class="card-text"> API Type:
+                  <span style="color:#00a8ff">GET</span>
+                  </p>
+                  <p>Expected data to be passed in the body of the request</p>
+      
+                  <table class="table">
+                    <thead class="thead-light">
+                      <tr>
+                        <th scope="col">paramerter</th>
+                        <th scope="col">Description</th>
+                        <th scope="col">Accepted values</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr>
+                        <th scope="row">customer_Id</th>
+                        <td>Customer Id</td>
+                        <td>Integer</td>
+                      </tr>
+                      <tr>
+                          <th scope="row">product_Id</th>
+                          <td>Product Id</td>
+                          <td>Integer</td>
+                        </tr>
+                    </tbody>
+                  </table>
+      
+                  <hr>
+                  <p>An example of the body of the request</p>
+                  <code>
+                      {
+                        "customer_Id" : "1",
+                        "product_Id":1
+                    }
+                      </code>
+            </div>
+          </div>
+      
+          <br>
+
   </div>
 <br>
 
