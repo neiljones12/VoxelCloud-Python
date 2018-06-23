@@ -7,6 +7,45 @@ import json
 url = 'http://127.0.0.1:5000/'
 
 class TestFunctions(unittest.TestCase):
+    
+    # Testing the Login API with valid inputs
+    def test_login(self):
+        login_api = url + 'login'
+
+        parameters = {
+                "Customer_Number": "AA1122",
+                "Password": "password",
+                "test":True
+            }
+
+        data = requests.post(url = login_api, data = json.dumps(parameters))
+        
+        expected_output = {
+                        "Customer_Id": 1
+                    }
+        
+        data = str(data.content,'utf-8')
+        check = json.dumps(expected_output)
+
+        self.maxDiff = None
+        self.assertEqual(data,check)
+
+    # Testing the Login API with invalid inputs
+    def test_login_invalid(self):
+        login_api = url + 'login'
+
+        parameters = {
+                "Customer_Number": "AA1122",
+                "Password": "password123",
+                "test":True
+            }
+
+        data = requests.post(url = login_api, data = json.dumps(parameters))
+        expected_output = '<Response [204]>'
+        
+        self.maxDiff = None
+        self.assertEqual(str(data),expected_output)
+    
     # Testing the Read API with valid inputs
     def test_read(self):
         read_api = url + 'read'

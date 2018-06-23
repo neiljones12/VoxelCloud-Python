@@ -27,6 +27,56 @@
   </div>
 
   <div class="container">
+
+      <div class="card">
+          <div class="card-header">
+            Login API
+          </div>
+          <div class="card-body">
+            <class="card-text"> API Endpoint:
+              <span style="color:#00a8ff">https://voxelcloud-demo-python.herokuapp.com/login</span>
+              </p>
+              <class="card-text"> API Type:
+                <span style="color:#00a8ff">POST</span>
+                </p>
+                <p>Expected data to be passed in the body of the request</p>
+    
+                <table class="table">
+                  <thead class="thead-light">
+                    <tr>
+                      <th scope="col">paramerter</th>
+                      <th scope="col">Description</th>
+                      <th scope="col">Accepted values</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <th scope="row">Customer_Number</th>
+                      <td>Customer Number</td>
+                      <td>Only numbers and standard characters, no dashes or colons</td>
+                    </tr>
+                    <tr>
+                      <th scope="row">Password</th>
+                      <td>Password</td>
+                      <td>Standard format</td>
+                    </tr>
+                  </tbody>
+                </table>
+    
+                <hr>
+                <p>An example of the body of the request</p>
+                <code>
+                    {
+                      "Customer_Number": "AA1122",
+                      "Password": "password"
+                    }
+                    </code>
+          </div>
+        </div>
+    
+        <br>
+
+
     <div class="card">
       <div class="card-header">
         Read API
