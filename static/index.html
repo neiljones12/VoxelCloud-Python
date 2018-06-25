@@ -28,53 +28,53 @@
 
   <div class="container">
 
-      <div class="card">
-          <div class="card-header">
-            Login API
-          </div>
-          <div class="card-body">
-            <class="card-text"> API Endpoint:
-              <span style="color:#00a8ff">https://voxelcloud-demo-python.herokuapp.com/login</span>
-              </p>
-              <class="card-text"> API Type:
-                <span style="color:#00a8ff">POST</span>
-                </p>
-                <p>Expected data to be passed in the body of the request</p>
-    
-                <table class="table">
-                  <thead class="thead-light">
-                    <tr>
-                      <th scope="col">paramerter</th>
-                      <th scope="col">Description</th>
-                      <th scope="col">Accepted values</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    <tr>
-                      <th scope="row">Customer_Number</th>
-                      <td>Customer Number</td>
-                      <td>Only numbers and standard characters, no dashes or colons</td>
-                    </tr>
-                    <tr>
-                      <th scope="row">Password</th>
-                      <td>Password</td>
-                      <td>Standard format</td>
-                    </tr>
-                  </tbody>
-                </table>
-    
-                <hr>
-                <p>An example of the body of the request</p>
-                <code>
+    <div class="card">
+      <div class="card-header">
+        Login API
+      </div>
+      <div class="card-body">
+        <class="card-text"> API Endpoint:
+          <span style="color:#00a8ff">https://voxelcloud-demo-python.herokuapp.com/login</span>
+          </p>
+          <class="card-text"> API Type:
+            <span style="color:#00a8ff">POST</span>
+            </p>
+            <p>Expected data to be passed in the body of the request</p>
+
+            <table class="table">
+              <thead class="thead-light">
+                <tr>
+                  <th scope="col">paramerter</th>
+                  <th scope="col">Description</th>
+                  <th scope="col">Accepted values</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <th scope="row">Customer_Number</th>
+                  <td>Customer Number</td>
+                  <td>Only numbers and standard characters, no dashes or colons</td>
+                </tr>
+                <tr>
+                  <th scope="row">Password</th>
+                  <td>Password</td>
+                  <td>Standard format</td>
+                </tr>
+              </tbody>
+            </table>
+
+            <hr>
+            <p>An example of the body of the request</p>
+            <code>
                     {
                       "Customer_Number": "AA1122",
                       "Password": "password"
                     }
                     </code>
-          </div>
-        </div>
-    
-        <br>
+      </div>
+    </div>
+
+    <br>
 
 
     <div class="card">
@@ -199,79 +199,79 @@
     <br>
 
     <div class="card">
-        <div class="card-header">
-          write_immediate API
-        </div>
-        <div class="card-body">
-          <class="card-text"> API Endpoint:
-            <span style="color:#00a8ff">https://voxelcloud-demo-python.herokuapp.com/write_immediate</span>
+      <div class="card-header">
+        write_immediate API
+      </div>
+      <div class="card-body">
+        <class="card-text"> API Endpoint:
+          <span style="color:#00a8ff">https://voxelcloud-demo-python.herokuapp.com/write_immediate</span>
+          </p>
+          <class="card-text"> API Type:
+            <span style="color:#00a8ff">PUT</span>
             </p>
-            <class="card-text"> API Type:
-              <span style="color:#00a8ff">PUT</span>
-              </p>
-              <p>Expected Inputs to be passed in the body of the request</p>
-  
-              <table class="table">
-                <thead class="thead-light">
-                  <tr>
-                    <th scope="col">paramerter</th>
-                    <th scope="col">Description</th>
-                    <th scope="col">Accepted values</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr>
-                    <th scope="row">status_at_event_comp</th>
-                    <td>Compressor Status at event</td>
-                    <td>1=On 0=Off</td>
-                  </tr>
-                  <tr>
-                    <th scope="row">status_at_event_fan</th>
-                    <td>Fan Status at event</td>
-                    <td>1=On 0=Off</td>
-                  </tr>
-                  <tr>
-                      <th scope="row">status_after_event_comp</th>
-                      <td>Compressor Status after event</td>
-                      <td>1=On 0=Off</td>
-                    </tr>
-                    <tr>
-                      <th scope="row">status_after_event_fan</th>
-                      <td>Fan Status after event</td>
-                      <td>1=On 0=Off</td>
-                    </tr>
-                  <tr>
-                    <th scope="row">restart_chk_comp</th>
-                    <td>Compressor restart</td>
-                    <td>1=Y 0=N (Restarted after 20 minutes)</td>
-                  </tr>
-                  <tr>
-                      <th scope="row">restart_chk_fan</th>
-                      <td>Fan restart</td>
-                      <td>1=Y 0=N (Restarted after 20 minutes)</td>
-                    </tr>
-                  <tr>
-                    <th scope="row">temp</th>
-                    <td>Temperature </td>
-                    <td>1=Y 0=N (Restarted after 20 minutes)</td>
-                  </tr>
-                  <tr>
-                    <th scope="row">mac</th>
-                    <td>Mac Address</td>
-                    <td>Only numbers and standard characters, no dashes or colons</td>
-                  </tr>
-                  <tr>
-                    <th scope="row">serial</th>
-                    <td>Serial number</td>
-                    <td>Standard format</td>
-                  </tr>
-  
-                </tbody>
-              </table>
-  
-              <hr>
-              <p>An example of the body of the request</p>
-              <code>
+            <p>Expected Inputs to be passed in the body of the request</p>
+
+            <table class="table">
+              <thead class="thead-light">
+                <tr>
+                  <th scope="col">paramerter</th>
+                  <th scope="col">Description</th>
+                  <th scope="col">Accepted values</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <th scope="row">status_at_event_comp</th>
+                  <td>Compressor Status at event</td>
+                  <td>1=On 0=Off</td>
+                </tr>
+                <tr>
+                  <th scope="row">status_at_event_fan</th>
+                  <td>Fan Status at event</td>
+                  <td>1=On 0=Off</td>
+                </tr>
+                <tr>
+                  <th scope="row">status_after_event_comp</th>
+                  <td>Compressor Status after event</td>
+                  <td>1=On 0=Off</td>
+                </tr>
+                <tr>
+                  <th scope="row">status_after_event_fan</th>
+                  <td>Fan Status after event</td>
+                  <td>1=On 0=Off</td>
+                </tr>
+                <tr>
+                  <th scope="row">restart_chk_comp</th>
+                  <td>Compressor restart</td>
+                  <td>1=Y 0=N (Restarted after 20 minutes)</td>
+                </tr>
+                <tr>
+                  <th scope="row">restart_chk_fan</th>
+                  <td>Fan restart</td>
+                  <td>1=Y 0=N (Restarted after 20 minutes)</td>
+                </tr>
+                <tr>
+                  <th scope="row">temp</th>
+                  <td>Temperature </td>
+                  <td>1=Y 0=N (Restarted after 20 minutes)</td>
+                </tr>
+                <tr>
+                  <th scope="row">mac</th>
+                  <td>Mac Address</td>
+                  <td>Only numbers and standard characters, no dashes or colons</td>
+                </tr>
+                <tr>
+                  <th scope="row">serial</th>
+                  <td>Serial number</td>
+                  <td>Standard format</td>
+                </tr>
+
+              </tbody>
+            </table>
+
+            <hr>
+            <p>An example of the body of the request</p>
+            <code>
                   {
                     "status_at_event_comp": "0",
                     "status_at_event_fan": "0",
@@ -283,103 +283,143 @@
                     "serial": "1"
                   }
                 </code>
-        </div>
       </div>
+    </div>
 
-      <br>
+    <br>
 
-      <div class="card">
-          <div class="card-header">
-            View API
-          </div>
-          <div class="card-body">
-            <class="card-text"> API Endpoint:
-              <span style="color:#00a8ff">https://voxelcloud-demo-python.herokuapp.com/view</span>
-              </p>
-              <class="card-text"> API Type:
-                <span style="color:#00a8ff">GET</span>
-                </p>
-                <p>Expected data to be passed in the body of the request</p>
-    
-                <table class="table">
-                  <thead class="thead-light">
-                    <tr>
-                      <th scope="col">paramerter</th>
-                      <th scope="col">Description</th>
-                      <th scope="col">Accepted values</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    <tr>
-                      <th scope="row">customer_Id</th>
-                      <td>Customer Id</td>
-                      <td>Integer</td>
-                    </tr>
-                  </tbody>
-                </table>
-    
-                <hr>
-                <p>An example of the body of the request</p>
-                <code>
+    <div class="card">
+      <div class="card-header">
+        View API
+      </div>
+      <div class="card-body">
+        <class="card-text"> API Endpoint:
+          <span style="color:#00a8ff">https://voxelcloud-demo-python.herokuapp.com/view</span>
+          </p>
+          <class="card-text"> API Type:
+            <span style="color:#00a8ff">GET</span>
+            </p>
+            <p>Expected data to be passed in the body of the request</p>
+
+            <table class="table">
+              <thead class="thead-light">
+                <tr>
+                  <th scope="col">paramerter</th>
+                  <th scope="col">Description</th>
+                  <th scope="col">Accepted values</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <th scope="row">customer_Id</th>
+                  <td>Customer Id</td>
+                  <td>Integer</td>
+                </tr>
+              </tbody>
+            </table>
+
+            <hr>
+            <p>An example of the body of the request</p>
+            <code>
                     {
                       "customer_Id": 1
                     }
                     </code>
-          </div>
-        </div>
-    
-        <br>
+      </div>
+    </div>
 
-        <div class="card">
-            <div class="card-header">
-                view_device API
-            </div>
-            <div class="card-body">
-              <class="card-text"> API Endpoint:
-                <span style="color:#00a8ff">https://voxelcloud-demo-python.herokuapp.com/view_device</span>
-                </p>
-                <class="card-text"> API Type:
-                  <span style="color:#00a8ff">GET</span>
-                  </p>
-                  <p>Expected data to be passed in the body of the request</p>
-      
-                  <table class="table">
-                    <thead class="thead-light">
-                      <tr>
-                        <th scope="col">paramerter</th>
-                        <th scope="col">Description</th>
-                        <th scope="col">Accepted values</th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      <tr>
-                        <th scope="row">customer_Id</th>
-                        <td>Customer Id</td>
-                        <td>Integer</td>
-                      </tr>
-                      <tr>
-                          <th scope="row">device_Id</th>
-                          <td>device Id</td>
-                          <td>Integer</td>
-                        </tr>
-                    </tbody>
-                  </table>
-      
-                  <hr>
-                  <p>An example of the body of the request</p>
-                  <code>
+    <br>
+
+    <div class="card">
+      <div class="card-header">
+        view_device API
+      </div>
+      <div class="card-body">
+        <class="card-text"> API Endpoint:
+          <span style="color:#00a8ff">https://voxelcloud-demo-python.herokuapp.com/view_device</span>
+          </p>
+          <class="card-text"> API Type:
+            <span style="color:#00a8ff">GET</span>
+            </p>
+            <p>Expected data to be passed in the body of the request</p>
+
+            <table class="table">
+              <thead class="thead-light">
+                <tr>
+                  <th scope="col">paramerter</th>
+                  <th scope="col">Description</th>
+                  <th scope="col">Accepted values</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <th scope="row">customer_Id</th>
+                  <td>Customer Id</td>
+                  <td>Integer</td>
+                </tr>
+                <tr>
+                  <th scope="row">device_Id</th>
+                  <td>device Id</td>
+                  <td>Integer</td>
+                </tr>
+              </tbody>
+            </table>
+
+            <hr>
+            <p>An example of the body of the request</p>
+            <code>
                       {
                         "customer_Id" : "1",
                         "device_Id":1
                     }
                       </code>
-            </div>
-          </div>
-      
-          <br>
+      </div>
+    </div>
+
+    <br>
+
+    <div class="card">
+      <div class="card-header">
+        view_device_logs API
+      </div>
+      <div class="card-body">
+        <class="card-text"> API Endpoint:
+          <span style="color:#00a8ff">https://voxelcloud-demo-python.herokuapp.com/view_device_logs</span>
+          </p>
+          <class="card-text"> API Type:
+            <span style="color:#00a8ff">GET</span>
+            </p>
+            <p>Expected data to be passed in the body of the request</p>
+
+            <table class="table">
+              <thead class="thead-light">
+                <tr>
+                  <th scope="col">paramerter</th>
+                  <th scope="col">Description</th>
+                  <th scope="col">Accepted values</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <th scope="row">device_Id</th>
+                  <td>device Id</td>
+                  <td>Integer</td>
+                </tr>
+              </tbody>
+            </table>
+
+            <hr>
+            <p>An example of the body of the request</p>
+            <code>
+                      {
+                        "device_Id":1
+                    }
+                      </code>
+      </div>
+    </div>
 
   </div>
-<br>
+  <br>
 
   <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
     crossorigin="anonymous"></script>
