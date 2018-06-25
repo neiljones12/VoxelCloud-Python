@@ -99,14 +99,14 @@ class TestFunctions(unittest.TestCase):
                         "Location_Id": 1,
                         "Location_Name": "Location 1"
                     },
-                    "customer_products": [
+                    "customer_devices": [
                         {
-                            "Product_Id": 1,
-                            "Product_Name": "Product 1"
+                            "Device_Id": 1,
+                            "Device_Name": "Device 1"
                         },
                         {
-                            "Product_Id": 2,
-                            "Product_Name": "Product 2"
+                            "Device_Id": 2,
+                            "Device_Name": "Device 2"
                         }
                     ]
                 }
@@ -133,22 +133,22 @@ class TestFunctions(unittest.TestCase):
         self.maxDiff = None
         self.assertEqual(str(data),expected_output)
 
-    # Testing the view_product API with valid inputs
-    def test_view_product(self):
-        read_api = url + 'view_product'
+    # Testing the view_device API with valid inputs
+    def test_view_device(self):
+        read_api = url + 'view_device'
 
         parameters = {
                     "customer_Id" : "1",
-	                "product_Id": "1",
+	                "device_Id": "1",
                     "test": True
                 }
 
         data = requests.get(url = read_api, data = json.dumps(parameters))
         
         expected_output = {
-                "product_details": {
-                    "Product_Id": 1,
-                    "Product_Name": "Product 1",
+                "Device_details": {
+                    "Device_Id": 1,
+                    "Device_Name": "Device 1",
                     "Fan_status": 0,
                     "Temperature_alert": 0,
                     "Temperature": 80,
@@ -156,7 +156,7 @@ class TestFunctions(unittest.TestCase):
                     "Serial_Number": "1",
                     "Mac_Address": "001122334455",
                     "Communication_Frequency": 24,
-                    "Installation_Date": "6/22/2018",
+                    "Installation_Date": "6/25/2018",
                     "Write_Frequency": 10,
                     "Write_Time": 20,
                     "Timestamp": None
@@ -169,13 +169,13 @@ class TestFunctions(unittest.TestCase):
         self.maxDiff = None
         self.assertEqual(data,check)
 
-    # Testing the view_product API with invalid inputs
-    def test_view_product_invalid(self):
-        read_api = url + 'view_product'
+    # Testing the view_device API with invalid inputs
+    def test_view_device_invalid(self):
+        read_api = url + 'view_device'
 
         parameters = {
                     "customer_Id" : "0",
-	                "product_Id": "1",
+	                "device_Id": "1",
                     "test": True
                 }
                 

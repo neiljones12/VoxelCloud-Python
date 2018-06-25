@@ -86,7 +86,7 @@ def read():
         test = False
 
     # Appending the paramters to the query string
-    query = 'SELECT * FROM public."Products" WHERE "Mac_Address" = '+mac+' AND "Serial_Number" = '+serial
+    query = 'SELECT * FROM public."Devices" WHERE "Mac_Address" = '+mac+' AND "Serial_Number" = '+serial
     db_context = open_connection(test)
     cur = db_context.cursor()
 
@@ -104,10 +104,10 @@ def read():
         return ('', 204)
 
     colnames = [desc[0] for desc in cur.description]
-    product = result_set[0]
+    device = result_set[0]
 
     # Saving the result as a key, value pair
-    result = dict(zip(colnames,product))
+    result = dict(zip(colnames,device))
 
     response = {}
     response['comm_freq'] = result['Communication_Frequency']
@@ -153,7 +153,7 @@ def write():
         test = False
 
     # Appending the paramters to the query string
-    query = 'SELECT * FROM public."Products" WHERE "Mac_Address" = '+mac+' AND "Serial_Number" = '+serial
+    query = 'SELECT * FROM public."Devices" WHERE "Mac_Address" = '+mac+' AND "Serial_Number" = '+serial
     
     db_context = open_connection(test)
     cur = db_context.cursor()
@@ -177,9 +177,9 @@ def write():
     Mac_Address = json_data["mac"]
     Serial_Number = json_data["serial"]
 
-    #update_query = 'UPDATE public."Products" SET "Compressor_status"='+Compressor_status+', "Fan_status"='+Fan_status+', "Temperature_alert"='+Temperature_alert+', "Temperature"='+Temperature+', "Timestamp"='+Timestamp+' WHERE "Mac_Address" = '+mac+' AND "Serial_Number" = '+serial
+    #update_query = 'UPDATE public."Devices" SET "Compressor_status"='+Compressor_status+', "Fan_status"='+Fan_status+', "Temperature_alert"='+Temperature_alert+', "Temperature"='+Temperature+', "Timestamp"='+Timestamp+' WHERE "Mac_Address" = '+mac+' AND "Serial_Number" = '+serial
 
-    cur.execute('UPDATE public."Products" SET "Compressor_status"=%s, "Fan_status"=%s, "Temperature_alert"=%s, "Temperature"=%s, "Timestamp"=%s WHERE "Mac_Address" = %s AND "Serial_Number" = %s', (Compressor_status,Fan_status,Temperature_alert,Temperature,Timestamp,Mac_Address,Serial_Number))
+    cur.execute('UPDATE public."Devices" SET "Compressor_status"=%s, "Fan_status"=%s, "Temperature_alert"=%s, "Temperature"=%s, "Timestamp"=%s WHERE "Mac_Address" = %s AND "Serial_Number" = %s', (Compressor_status,Fan_status,Temperature_alert,Temperature,Timestamp,Mac_Address,Serial_Number))
     db_context.commit()
     #cur.execute(update_query)
 
@@ -203,7 +203,7 @@ def write_immediate():
         test = False
 
     # Appending the paramters to the query string
-    query = 'SELECT * FROM public."Products" WHERE "Mac_Address" = '+mac+' AND "Serial_Number" = '+serial
+    query = 'SELECT * FROM public."Devices" WHERE "Mac_Address" = '+mac+' AND "Serial_Number" = '+serial
     
     db_context = open_connection(test)
     cur = db_context.cursor()
@@ -220,19 +220,19 @@ def write_immediate():
         return ('', 204)
     
     colnames = [desc[0] for desc in cur.description]
-    product = result_set[0]
+    device = result_set[0]
     # Saving the result as a key, value pair
-    result = dict(zip(colnames,product))
-    Product_Id = str(result['Id'])
+    result = dict(zip(colnames,device))
+    device_Id = str(result['Id'])
 
-    query = 'SELECT * FROM public."ProductEvents" WHERE "ProductId" = '+Product_Id+''
+    query = 'SELECT * FROM public."DeviceEvents" WHERE "DeviceId" = '+device_Id+''
     # Executing the query
     cur.execute(query)
 
     # Fetching the result
     result_set = cur.fetchall()
 
-    # Checking if a value matching the product id exists in the ProductEvents table
+    # Checking if a value matching the device id exists in the deviceEvents table
     # Modeling the query to insert or update based on the value of the isExist flag
     isExist = True
     if (result_set == []):
@@ -249,10 +249,10 @@ def write_immediate():
     
     # A value exists, so we will run an update query
     if(isExist):
-        cur.execute('UPDATE public."ProductEvents" SET "Status_At_Event_Compressor"=%s, "Status_At_Event_Fan"=%s, "Status_After_Event_Compressor"=%s, "Status_After_Event_Fan"=%s, "Restart_Check_Compressor"=%s, "Restart_Check_Fan"=%s, "Timestamp"=%s WHERE "ProductId" = %s', (status_at_event_comp, status_at_event_fan, status_after_event_comp, status_after_event_fan, restart_chk_comp, restart_chk_fan, Timestamp, Product_Id))
+        cur.execute('UPDATE public."DeviceEvents" SET "Status_At_Event_Compressor"=%s, "Status_At_Event_Fan"=%s, "Status_After_Event_Compressor"=%s, "Status_After_Event_Fan"=%s, "Restart_Check_Compressor"=%s, "Restart_Check_Fan"=%s, "Timestamp"=%s WHERE "DeviceId" = %s', (status_at_event_comp, status_at_event_fan, status_after_event_comp, status_after_event_fan, restart_chk_comp, restart_chk_fan, Timestamp, device_Id))
     # A value does not exist, so we will run an insert query
     else:
-        cur.execute('INSERT INTO public."ProductEvents" ("ProductId", "Status_At_Event_Compressor", "Status_At_Event_Fan", "Status_After_Event_Compressor", "Status_After_Event_Fan", "Restart_Check_Compressor", "Restart_Check_Fan", "Timestamp") VALUES (%s, %s, %s, %s, %s, %s, %s, %s)', (Product_Id, status_at_event_comp, status_at_event_fan, status_after_event_comp, status_after_event_fan, restart_chk_comp, restart_chk_fan, Timestamp))
+        cur.execute('INSERT INTO public."DeviceEvents" ("DeviceId", "Status_At_Event_Compressor", "Status_At_Event_Fan", "Status_After_Event_Compressor", "Status_After_Event_Fan", "Restart_Check_Compressor", "Restart_Check_Fan", "Timestamp") VALUES (%s, %s, %s, %s, %s, %s, %s, %s)', (device_Id, status_at_event_comp, status_at_event_fan, status_after_event_comp, status_after_event_fan, restart_chk_comp, restart_chk_fan, Timestamp))
 
     db_context.commit()
     close_connection(cur, db_context)
@@ -307,47 +307,47 @@ def view():
             'Location_Name': result['Name']
         }
 
-    query_product_list = 'SELECT * FROM public."Customers" c, public."CustomerProducts" cp, public."Products" p WHERE c."Id" = cp."CustomerId" AND cp."ProductId" = p."Id" AND c."Id" = '+customer_Id
+    query_device_list = 'SELECT * FROM public."Customers" c, public."CustomerDevices" cp, public."Devices" p WHERE c."Id" = cp."CustomerId" AND cp."DeviceId" = p."Id" AND c."Id" = '+customer_Id
 
-    cur.execute(query_product_list)
+    cur.execute(query_device_list)
 
     # Fetching the result
-    result_set_product_list = cur.fetchall()
-    result_product_list = []
+    result_set_device_list = cur.fetchall()
+    result_device_list = []
 
-    # Checking to see if there are any products associated with the customer
-    if(result_set_product_list != []):
-        colnames_product_list = [desc[0] for desc in cur.description]
+    # Checking to see if there are any devices associated with the customer
+    if(result_set_device_list != []):
+        colnames_device_list = [desc[0] for desc in cur.description]
 
-        for row in result_set_product_list:
-            result_product_list.append(dict(zip(colnames_product_list, row)))
+        for row in result_set_device_list:
+            result_device_list.append(dict(zip(colnames_device_list, row)))
 
-    response['customer_products'] = []
+    response['customer_devices'] = []
 
-    for row in result_product_list:
-        response['customer_products'].append({
-            'Product_Id': row['ProductId'],
-            'Product_Name': row['Name']
+    for row in result_device_list:
+        response['customer_devices'].append({
+            'Device_Id': row['DeviceId'],
+            'Device_Name': row['Name']
         })
 
     close_connection(cur, db_context)
     # Return the JSON object and the Http 200 status to show a succucc status
     return json.dumps(response),status.HTTP_200_OK
 
-# View Product API
-@app.route('/view_product', methods=['GET'])
-def view_product():
+# View device API
+@app.route('/view_device', methods=['GET'])
+def view_device():
     customer_Id = request.args.get('customer_Id')
-    product_Id = request.args.get('product_Id')
+    device_Id = request.args.get('device_Id')
     test = False
-    if (customer_Id == None and product_Id == None):
+    if (customer_Id == None and device_Id == None):
         # Reading the parameters from the body
         data = request.data
         json_data = json.loads(data)
         
         # Saving the parameters as string
         customer_Id =  str(json_data["customer_Id"])
-        product_Id =  str(json_data["product_Id"])
+        device_Id =  str(json_data["device_Id"])
         
         # Checking to see if the test value is passed to the API, If test is true, the testing database is used
         if "test" in json_data:
@@ -359,7 +359,7 @@ def view_product():
     db_context = open_connection(test)
     cur = db_context.cursor()
 
-    query = 'SELECT * FROM public."CustomerProducts" cp, public."Products" p WHERE cp."ProductId" = p."Id" AND cp."CustomerId" = '+customer_Id+' AND p."Id" ='+product_Id
+    query = 'SELECT * FROM public."CustomerDevices" cp, public."Devices" p WHERE cp."DeviceId" = p."Id" AND cp."CustomerId" = '+customer_Id+' AND p."Id" ='+device_Id
 
     # Executing the query
     cur.execute(query)
@@ -381,9 +381,9 @@ def view_product():
     if test:
         result['Timestamp'] = None
 
-    response['product_details'] ={
-            'Product_Id': result['ProductId'],
-            'Product_Name': result['Name'],
+    response['Device_details'] ={
+            'Device_Id': result['DeviceId'],
+            'Device_Name': result['Name'],
             'Fan_status': result['Fan_status'],
             'Temperature_alert': result['Temperature_alert'],
             'Temperature': result['Temperature'],
