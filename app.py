@@ -7,6 +7,7 @@ from API.read import read_api
 from API.write import write_api
 from API.view import view_api
 from API.view_device import view_device_api
+from API.view_device_logs import view_device_logs_api
 from API.write_immediate import write_immediate_api
 
 
@@ -49,3 +50,8 @@ def view():
 @app.route('/view_device', methods=['GET'])
 def view_device():
     return(view_device_api(request))
+
+# View device logs API
+@app.route('/view_device_logs', methods=['GET'])
+def view_device_logs():
+    return(view_device_logs_api(request))

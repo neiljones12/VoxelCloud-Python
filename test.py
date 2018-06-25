@@ -52,13 +52,13 @@ class TestFunctions(unittest.TestCase):
 
         parameters = {
                     "mac" : "001122334455",
-                    "serial": "1",
+                    "serial": "1001",
                     "test": True
                 }
 
         data = requests.get(url = read_api, data = json.dumps(parameters))
         
-        expected_output = {"comm_freq": 24, "write_freq": "Seconds", "write_length_time": 20, "demand_resp_code": "Compressor Off (6min)", "demand_resp_time": "", "reporting_url": "https://voxelcloud-demo-python.herokuapp.com", "mac": "001122334455", "serial": "1"}
+        expected_output = {"comm_freq": 24, "write_freq": "Seconds", "write_length_time": 20, "demand_resp_code": "Compressor Off (6min)", "demand_resp_time": "", "reporting_url": "https://voxelcloud-demo-python.herokuapp.com", "mac": "001122334455", "serial": "1001"}
         
         data = str(data.content,'utf-8')
         check = json.dumps(expected_output)
@@ -153,10 +153,10 @@ class TestFunctions(unittest.TestCase):
                     "Temperature_alert": 0,
                     "Temperature": 80,
                     "Ip_Address": "10.0.0.4",
-                    "Serial_Number": "1",
+                    "Serial_Number": "1001",
                     "Mac_Address": "001122334455",
                     "Communication_Frequency": 24,
-                    "Installation_Date": "6/25/2018",
+                    "Installation_Date": "2/25/2017 01:02:03",
                     "Write_Frequency": 10,
                     "Write_Time": 20,
                     "Timestamp": None
@@ -185,6 +185,54 @@ class TestFunctions(unittest.TestCase):
         self.maxDiff = None
         self.assertEqual(str(data),expected_output)
 
+     # Testing the view_device_logs API with valid inputs
+    def test_view_device_logs(self):
+        read_api = url + 'view_device_logs'
+
+        parameters = {
+	                "device_Id": "1",
+                    "test": True
+                }
+
+        data = requests.get(url = read_api, data = json.dumps(parameters))
+        
+        expected_output = [
+                {
+                    "Id": 1,
+                    "Device_Id": 1,
+                    "Status_At_Event_Compressor": 0,
+                    "Status_At_Event_Fan": 0,
+                    "Status_After_Event_Compressor": 0,
+                    "Status_After_Event_Fan": 0,
+                    "Restart_Check_Compressor": 1,
+                    "Restart_Check_Fan": 1,
+                    "Temperature": 75,
+                    "Timestamp": None
+                }
+            ]
+        
+        data = str(data.content,'utf-8')
+        check = json.dumps(expected_output)
+
+        self.maxDiff = None
+        self.assertEqual(data,check)
+    
+    # Testing the view_device_logs API with invalid inputs
+    def test_view_device_logs_invalid(self):
+        read_api = url + 'view_device_logs'
+
+        parameters = {
+	                "device_Id": "0",
+                    "test": True
+                }
+                
+        data = requests.get(url = read_api, data = json.dumps(parameters))
+        expected_output = '<Response [204]>'
+        
+        self.maxDiff = None
+        self.assertEqual(str(data),expected_output)
+
+
     # Testing the write API with valid inputs
     def test_write(self):
         read_api = url + 'write'
@@ -195,7 +243,7 @@ class TestFunctions(unittest.TestCase):
                 "temp_alert": 0,
                 "temp": 80,
                 "mac": "001122334455",
-                "serial": "1",
+                "serial": "1001",
                 "test": True
             }
                 
@@ -237,7 +285,8 @@ class TestFunctions(unittest.TestCase):
                 "restart_chk_comp": "1",
                 "restart_chk_fan": "1",
                 "mac": "001122334455",
-                "serial": "1",
+                "Temperature": "80",
+                "serial": "1001",
                 "test": True
             }
                 
@@ -259,7 +308,7 @@ class TestFunctions(unittest.TestCase):
                 "restart_chk_comp": "1",
                 "restart_chk_fan": "1",
                 "mac": "001122334455",
-                "serial": "0",
+                "serial": "0000",
                 "test": True
             }
                 

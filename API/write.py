@@ -53,7 +53,7 @@ def write_api(request):
         valid_input = False
 
     Temperature = str(json_data["temp"])
-    Timestamp = str(time.strftime("%H:%M:%S"))
+    Timestamp = str(time.strftime("%m/%d/%Y %H:%M:%S"))
     Mac_Address = json_data["mac"]
     Serial_Number = json_data["serial"]
 
