@@ -64,6 +64,8 @@ def read_api(request):
     if(not test):
         response['delay'] = end - start #Delay in milli-seconds after the event.
     
+    # Closing the databse connection before returning the result
     close_connection(cur, db_context)
-    # Return the JSON object and the Http 200 status to show a succucc status
+
+    # Return the JSON object and the Http 200 status to show a success status
     return json.dumps(response),status.HTTP_200_OK

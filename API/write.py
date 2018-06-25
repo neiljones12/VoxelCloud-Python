@@ -31,20 +31,42 @@ def write_api(request):
         close_connection(cur, db_context)
         return ('', 204)
     
+    # Setting a flag to check if the inputs are valid and within bounds before writing to the database
+    valid_input = True
+
     Compressor_status = str(json_data["comp_status"])
+
+    # Compressor_status can only accept 0 or 1.
+    if(int(Compressor_status) < 0 or int(Compressor_status) > 1):
+        valid_input = False
+
     Fan_status = str(json_data["fan_status"])
+
+    # Fan_status can only accept 0 or 1.
+    if(int(Fan_status) < 0 or int(Fan_status) > 1):
+        valid_input = False
+
     Temperature_alert = str(json_data["temp_alert"])
+
+    # Temperature_alert can only accept 0 or 1.
+    if(int(Temperature_alert) < 0 or int(Temperature_alert) > 1):
+        valid_input = False
+
     Temperature = str(json_data["temp"])
     Timestamp = str(time.strftime("%H:%M:%S"))
     Mac_Address = json_data["mac"]
     Serial_Number = json_data["serial"]
 
-    #update_query = 'UPDATE public."Devices" SET "Compressor_status"='+Compressor_status+', "Fan_status"='+Fan_status+', "Temperature_alert"='+Temperature_alert+', "Temperature"='+Temperature+', "Timestamp"='+Timestamp+' WHERE "Mac_Address" = '+mac+' AND "Serial_Number" = '+serial
+    if (valid_input):
+        cur.execute('UPDATE public."Devices" SET "Compressor_status"=%s, "Fan_status"=%s, "Temperature_alert"=%s, "Temperature"=%s, "Timestamp"=%s WHERE "Mac_Address" = %s AND "Serial_Number" = %s', (Compressor_status,Fan_status,Temperature_alert,Temperature,Timestamp,Mac_Address,Serial_Number))
+        db_context.commit()
 
-    cur.execute('UPDATE public."Devices" SET "Compressor_status"=%s, "Fan_status"=%s, "Temperature_alert"=%s, "Temperature"=%s, "Timestamp"=%s WHERE "Mac_Address" = %s AND "Serial_Number" = %s', (Compressor_status,Fan_status,Temperature_alert,Temperature,Timestamp,Mac_Address,Serial_Number))
-    db_context.commit()
-    #cur.execute(update_query)
-
+    # Closing the databse connection before returning the result
     close_connection(cur, db_context)
-    return ('', 200)
 
+    if (valid_input):
+        # Return the Http 200 status to show a succcess status
+        return ('', 200)
+    else:
+        # Return an Http 400 status to show a bad request because of invalid data
+        return ('Invalid data, Please check the documentation', 400)

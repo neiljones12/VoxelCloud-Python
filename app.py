@@ -11,7 +11,7 @@ from API.write_immediate import write_immediate_api
 
 
 # Homepage route.
-# Displays API documentation by returning a static html.
+# Displays API documentation by returning index.html which can be found in the static folder.
 @app.route('/')
 def index():
     return current_app.send_static_file('index.html')
@@ -30,10 +30,12 @@ def login():
 def read():
     return(read_api(request))
 
+# Write API
 @app.route('/write', methods=['PUT'])
 def write():
     return(write_api(request))
 
+# Write Immediate API
 @app.route('/write_immediate', methods=['PUT'])
 def write_immediate():
     return(write_immediate_api(request))

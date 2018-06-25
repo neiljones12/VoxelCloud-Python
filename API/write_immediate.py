@@ -50,23 +50,63 @@ def write_immediate_api(request):
     if (result_set == []):
         isExist = False
 
+    valid_input = True
+
     status_at_event_comp = str(json_data["status_at_event_comp"])
+
+    # status_at_event_comp can only accept 0 or 1.
+    if(int(status_at_event_comp) < 0 or int(status_at_event_comp) > 1):
+        valid_input = False
+
     status_at_event_fan = str(json_data["status_at_event_fan"])
+
+    # status_at_event_fan can only accept 0 or 1.
+    if(int(status_at_event_fan) < 0 or int(status_at_event_fan) > 1):
+        valid_input = False
+
     status_after_event_comp = str(json_data["status_after_event_comp"])
+
+    # status_after_event_comp can only accept 0 or 1.
+    if(int(status_after_event_comp) < 0 or int(status_after_event_comp) > 1):
+        valid_input = False
+
     status_after_event_fan = str(json_data["status_after_event_fan"])
+
+    # status_after_event_fan can only accept 0 or 1.
+    if(int(status_after_event_fan) < 0 or int(status_after_event_fan) > 1):
+        valid_input = False
+
     restart_chk_comp = str(json_data["restart_chk_comp"])
+
+    # restart_chk_comp can only accept 0 or 1.
+    if(int(restart_chk_comp) < 0 or int(restart_chk_comp) > 1):
+        valid_input = False
+
     restart_chk_fan = str(json_data["restart_chk_fan"])
+
+    # restart_chk_fan can only accept 0 or 1.
+    if(int(restart_chk_fan) < 0 or int(restart_chk_fan) > 1):
+        valid_input = False
+
     Timestamp = str(time.strftime("%H:%M:%S"))
 
-    
-    # A value exists, so we will run an update query
-    if(isExist):
-        cur.execute('UPDATE public."DeviceEvents" SET "Status_At_Event_Compressor"=%s, "Status_At_Event_Fan"=%s, "Status_After_Event_Compressor"=%s, "Status_After_Event_Fan"=%s, "Restart_Check_Compressor"=%s, "Restart_Check_Fan"=%s, "Timestamp"=%s WHERE "DeviceId" = %s', (status_at_event_comp, status_at_event_fan, status_after_event_comp, status_after_event_fan, restart_chk_comp, restart_chk_fan, Timestamp, device_Id))
-    # A value does not exist, so we will run an insert query
-    else:
-        cur.execute('INSERT INTO public."DeviceEvents" ("DeviceId", "Status_At_Event_Compressor", "Status_At_Event_Fan", "Status_After_Event_Compressor", "Status_After_Event_Fan", "Restart_Check_Compressor", "Restart_Check_Fan", "Timestamp") VALUES (%s, %s, %s, %s, %s, %s, %s, %s)', (device_Id, status_at_event_comp, status_at_event_fan, status_after_event_comp, status_after_event_fan, restart_chk_comp, restart_chk_fan, Timestamp))
+    if(valid_input):
+        # A value exists, so we will run an update query
+        if(isExist):
+            cur.execute('UPDATE public."DeviceEvents" SET "Status_At_Event_Compressor"=%s, "Status_At_Event_Fan"=%s, "Status_After_Event_Compressor"=%s, "Status_After_Event_Fan"=%s, "Restart_Check_Compressor"=%s, "Restart_Check_Fan"=%s, "Timestamp"=%s WHERE "DeviceId" = %s', (status_at_event_comp, status_at_event_fan, status_after_event_comp, status_after_event_fan, restart_chk_comp, restart_chk_fan, Timestamp, device_Id))
+        # A value does not exist, so we will run an insert query
+        else:
+            cur.execute('INSERT INTO public."DeviceEvents" ("DeviceId", "Status_At_Event_Compressor", "Status_At_Event_Fan", "Status_After_Event_Compressor", "Status_After_Event_Fan", "Restart_Check_Compressor", "Restart_Check_Fan", "Timestamp") VALUES (%s, %s, %s, %s, %s, %s, %s, %s)', (device_Id, status_at_event_comp, status_at_event_fan, status_after_event_comp, status_after_event_fan, restart_chk_comp, restart_chk_fan, Timestamp))
 
-    db_context.commit()
+        db_context.commit()
+
+    # Closing the databse connection before returning the result
     close_connection(cur, db_context)
-    return ('', 200)
+    
+    if (valid_input):
+        # Return the Http 200 status to show a succcess status
+        return ('', 200)
+    else:
+        # Return an Http 400 status to show a bad request because of invalid data
+        return ('Invalid data, Please check the documentation', 400)
 
