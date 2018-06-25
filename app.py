@@ -337,19 +337,23 @@ def view():
 # View Product API
 @app.route('/view_product', methods=['GET'])
 def view_product():
-    # Reading the parameters from the body
-    data = request.data
-    json_data = json.loads(data)
-    
-    # Saving the parameters as string
-    customer_Id =  str(json_data["customer_Id"])
-    product_Id =  str(json_data["customer_Id"])
-    
-    # Checking to see if the test value is passed to the API, If test is true, the testing database is used
-    if "test" in json_data:
-        test = json_data["test"]
-    else:
-        test = False
+    customer_Id = request.args.get('customer_Id')
+    product_Id = request.args.get('product_Id')
+    test = False
+    if (customer_Id == None and product_Id == None):
+        # Reading the parameters from the body
+        data = request.data
+        json_data = json.loads(data)
+        
+        # Saving the parameters as string
+        customer_Id =  str(json_data["customer_Id"])
+        product_Id =  str(json_data["product_Id"])
+        
+        # Checking to see if the test value is passed to the API, If test is true, the testing database is used
+        if "test" in json_data:
+            test = json_data["test"]
+        else:
+            test = False
 
     # Opening the connection to the database
     db_context = open_connection(test)

@@ -139,7 +139,7 @@ class TestFunctions(unittest.TestCase):
 
         parameters = {
                     "customer_Id" : "1",
-	                "product_Id":1,
+	                "product_Id": "1",
                     "test": True
                 }
 
@@ -175,6 +175,7 @@ class TestFunctions(unittest.TestCase):
 
         parameters = {
                     "customer_Id" : "0",
+	                "product_Id": "1",
                     "test": True
                 }
                 
