@@ -65,12 +65,7 @@
 
             <hr>
             <p>An example of the body of the request</p>
-            <code>
-                    {
-                      "Customer_Number": "AA1122",
-                      "Password": "password"
-                    }
-                    </code>
+            <code>{ "Customer_Number": "AA1122", "Password": "password" } </code>
       </div>
     </div>
 
@@ -114,12 +109,7 @@
 
             <hr>
             <p>An example of the body of the request</p>
-            <code>
-                  {
-                    "mac" : "001122334455",
-                    "serial": "1"
-                  }
-                </code>
+            <code>{ "mac" : "001122334455", "serial": "1"  } </code>
       </div>
     </div>
 
@@ -253,7 +243,7 @@
                 <tr>
                   <th scope="row">temp</th>
                   <td>Temperature </td>
-                  <td>1=Y 0=N (Restarted after 20 minutes)</td>
+                  <td>Integer (in Fahrenheit)</td>
                 </tr>
                 <tr>
                   <th scope="row">mac</th>
@@ -405,16 +395,28 @@
                   <td>device Id</td>
                   <td>Integer</td>
                 </tr>
+                <tr>
+                  <th scope="row">from_date</th>
+                  <td>(Optional) Format: YYYY-MM-DD</td>
+                  <td>String</td>
+                </tr>
+                <tr>
+                  <th scope="row">to_date</th>
+                  <td>(Optional) Format: YYYY-MM-DD</td>
+                  <td>String</td>
+                </tr>
               </tbody>
             </table>
 
             <hr>
             <p>An example of the body of the request</p>
             <code>
-                      {
-                        "device_Id":1
-                    }
-                      </code>
+              {
+              "device_Id": "1",
+              "from_date": "2015-06-12",
+              "to_date": "2018-06-12"
+             } 
+            </code>
       </div>
     </div>
 
