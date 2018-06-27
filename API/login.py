@@ -1,4 +1,4 @@
-from API.config import open_connection, close_connection, json, status
+from API.config import open_connection, close_connection, json, status, re
 
 def login_api(request):
     # Reading the parameters from the body
@@ -15,8 +15,16 @@ def login_api(request):
     else:
         test = False
 
+    # Passing the parameters into the Validate_Input method to validate them
+    valid_input = Validate_Input(json_data["Customer_Number"],json_data["Password"])
+
+    if (not valid_input):
+        # Returning the HTTP code 204 because the server successfully processed the request, but is not returning any content.
+        return ('', 204)
+
     # Appending the paramters to the query string
     query = 'SELECT * FROM public."Customers" c WHERE c."Active" = true AND c."Customer_Number" = '+Customer_Number+' AND c."Password" = '+Password
+    
     db_context = open_connection(test)
     cur = db_context.cursor()
 
@@ -47,3 +55,16 @@ def login_api(request):
 
     # Return the JSON object and the Http 200 status to show a success status
     return json.dumps(response),status.HTTP_200_OK
+
+def Validate_Input (Customer_Number, Password):
+    valid = True
+
+    # Validating the Customer_Number parameter by allowing only characters and numbers
+    if (re.search("^[A-Za-z0-9]*$", Customer_Number) == None):
+        valid = False
+    
+    # Validating the Password parameter by allowing only characters and numbers
+    if (re.search("^[A-Za-z0-9]*$", Password) == None):
+        valid = False
+
+    return valid

@@ -34,9 +34,26 @@ class TestFunctions(unittest.TestCase):
     def test_login_invalid(self):
         login_api = url + 'login'
 
+        # SQL Injection
         parameters = {
                 "Customer_Number": "AA1122",
-                "Password": "password123",
+                "Password": "' or '1'='1",
+                "test":True
+            }
+
+        data = requests.post(url = login_api, data = json.dumps(parameters))
+        expected_output = '<Response [204]>'
+        
+        self.maxDiff = None
+        self.assertEqual(str(data),expected_output)
+
+    # Testing the Login API with invalid inputs (SQL Injection)
+    def test_login_invalid_SQL(self):
+        login_api = url + 'login'
+
+        parameters = {
+                "Customer_Number": "AA1122",
+                "Password": "password OR 1=1",
                 "test":True
             }
 
@@ -151,7 +168,7 @@ class TestFunctions(unittest.TestCase):
                     "Device_Name": "Device 1",
                     "Fan_status": 0,
                     "Temperature_alert": 0,
-                    "Temperature": 80,
+                    "Temperature": 75,
                     "Ip_Address": "10.0.0.4",
                     "Serial_Number": "1001",
                     "Mac_Address": "001122334455",
@@ -200,12 +217,12 @@ class TestFunctions(unittest.TestCase):
                 {
                     "Id": 1,
                     "Device_Id": 1,
-                    "Status_At_Event_Compressor": 0,
+                    "Status_At_Event_Compressor": 1,
                     "Status_At_Event_Fan": 0,
                     "Status_After_Event_Compressor": 0,
-                    "Status_After_Event_Fan": 0,
-                    "Restart_Check_Compressor": 1,
-                    "Restart_Check_Fan": 1,
+                    "Status_After_Event_Fan": 1,
+                    "Restart_Check_Compressor": 0,
+                    "Restart_Check_Fan": 0,
                     "Temperature": 75,
                     "Timestamp": None
                 }
@@ -242,8 +259,8 @@ class TestFunctions(unittest.TestCase):
                 "fan_status": 0,
                 "temp_alert": 0,
                 "temp": 80,
-                "mac": "001122334455",
-                "serial": "1001",
+                "mac": "001122334466",
+                "serial": "1002",
                 "test": True
             }
                 
@@ -284,9 +301,9 @@ class TestFunctions(unittest.TestCase):
                 "status_after_event_fan": "0",
                 "restart_chk_comp": "1",
                 "restart_chk_fan": "1",
-                "mac": "001122334455",
+                "mac": "001122334466",
                 "Temperature": "80",
-                "serial": "1001",
+                "serial": "1002",
                 "test": True
             }
                 
