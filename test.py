@@ -47,7 +47,7 @@ class TestFunctions(unittest.TestCase):
         self.maxDiff = None
         self.assertEqual(str(data),expected_output)
 
-    # Testing the Login API with invalid inputs (SQL Injection)
+    # Testing the Login API with invalid inputs
     def test_login_invalid_Password(self):
         login_api = url + 'login'
 
