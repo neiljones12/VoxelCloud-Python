@@ -48,12 +48,12 @@ class TestFunctions(unittest.TestCase):
         self.assertEqual(str(data),expected_output)
 
     # Testing the Login API with invalid inputs (SQL Injection)
-    def test_login_invalid_SQL(self):
+    def test_login_invalid_Password(self):
         login_api = url + 'login'
 
         parameters = {
                 "Customer_Number": "AA1122",
-                "Password": "password OR 1=1",
+                "Password": "password123",
                 "test":True
             }
 
