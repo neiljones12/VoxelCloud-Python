@@ -68,14 +68,14 @@ class TestFunctions(unittest.TestCase):
         read_api = url + 'read'
 
         parameters = {
-                    "mac" : "001122334455",
+                    "mac" : "3DF2C9A6B34F",
                     "serial": "1001",
                     "test": True
                 }
 
         data = requests.get(url = read_api, data = json.dumps(parameters))
         
-        expected_output = {"comm_freq": 24, "write_freq": "Seconds", "write_length_time": 20, "demand_resp_code": "Compressor Off (6min)", "demand_resp_time": "", "reporting_url": "https://voxelcloud-demo-python.herokuapp.com", "mac": "001122334455", "serial": "1001"}
+        expected_output = {"comm_freq": 24, "write_freq": "Seconds", "write_length_time": 20, "demand_resp_code": "Compressor Off (6min)", "demand_resp_time": "", "reporting_url": "https://voxelcloud-demo-python.herokuapp.com", "mac": "3DF2C9A6B34F", "serial": "1001"}
         
         data = str(data.content,'utf-8')
         check = json.dumps(expected_output)
@@ -89,7 +89,7 @@ class TestFunctions(unittest.TestCase):
 
         parameters = {
                     "mac" : "00",
-                    "serial": "1",
+                    "serial": "' or '1'='1",
                     "test": True
                 }
 
@@ -140,7 +140,7 @@ class TestFunctions(unittest.TestCase):
         read_api = url + 'view'
 
         parameters = {
-                    "customer_Id" : "0",
+                    "customer_Id" : "ABC",
                     "test": True
                 }
                 
@@ -171,7 +171,7 @@ class TestFunctions(unittest.TestCase):
                     "Temperature": 75,
                     "Ip_Address": "10.0.0.4",
                     "Serial_Number": "1001",
-                    "Mac_Address": "001122334455",
+                    "Mac_Address": "3DF2C9A6B34F",
                     "Communication_Frequency": 24,
                     "Installation_Date": "2/25/2017 01:02:03",
                     "Write_Frequency": 10,
@@ -191,8 +191,8 @@ class TestFunctions(unittest.TestCase):
         read_api = url + 'view_device'
 
         parameters = {
-                    "customer_Id" : "0",
-	                "device_Id": "1",
+                    "customer_Id" : "1",
+	                "device_Id": "ABC",
                     "test": True
                 }
                 
@@ -239,7 +239,7 @@ class TestFunctions(unittest.TestCase):
         read_api = url + 'view_device_logs'
 
         parameters = {
-	                "device_Id": "0",
+	                "device_Id": "ABC",
                     "test": True
                 }
                 
@@ -259,7 +259,7 @@ class TestFunctions(unittest.TestCase):
                 "fan_status": 0,
                 "temp_alert": 0,
                 "temp": 80,
-                "mac": "001122334466",
+                "mac": "3DF2D9B7B34F",
                 "serial": "1002",
                 "test": True
             }
@@ -280,7 +280,7 @@ class TestFunctions(unittest.TestCase):
                 "temp_alert": 0,
                 "temp": 80,
                 "mac": "001122334455",
-                "serial": "0",
+                "serial": "1002",
                 "test": True
             }
                 
@@ -301,7 +301,7 @@ class TestFunctions(unittest.TestCase):
                 "status_after_event_fan": "0",
                 "restart_chk_comp": "1",
                 "restart_chk_fan": "1",
-                "mac": "001122334466",
+                "mac": "3DF2D9B7B34F",
                 "Temperature": "80",
                 "serial": "1002",
                 "test": True
@@ -313,7 +313,7 @@ class TestFunctions(unittest.TestCase):
         self.maxDiff = None
         self.assertEqual(str(data),expected_output)
 
-        # Testing the write_immediate API with invalid inputs
+    # Testing the write_immediate API with invalid inputs
     def test_write_immediate_invalid(self):
         read_api = url + 'write_immediate'
 
@@ -324,8 +324,8 @@ class TestFunctions(unittest.TestCase):
                 "status_after_event_fan": "0",
                 "restart_chk_comp": "1",
                 "restart_chk_fan": "1",
-                "mac": "001122334455",
-                "serial": "0000",
+                "mac": "3DF2C9A6B34F",
+                "serial": "' or '1'='1",
                 "test": True
             }
                 

@@ -1,4 +1,6 @@
-from API.config import open_connection, close_connection, write_freq_display, conpressor_status_display, time, json, status
+from API.config import open_connection, close_connection, write_freq_display, conpressor_status_display, time, json, status, re
+
+MAX_LENGTH = 15
 
 def read_api(request):
     start = int(round(time.time() * 1000))
@@ -10,6 +12,12 @@ def read_api(request):
     # Saving the parameters as string
     mac = "'" + json_data["mac"] + "'"
     serial =  "'" +json_data["serial"]+ "'"
+
+    valid_input = Validate_Input(json_data["mac"],json_data["serial"])
+
+    if (not valid_input):
+        # Returning the HTTP code 204 because the server successfully processed the request, but is not returning any content.
+        return ('', 204)
 
     # Checking to see if the test value is passed to the API, If test is true, the testing database is used
     if "test" in json_data:
@@ -69,3 +77,20 @@ def read_api(request):
 
     # Return the JSON object and the Http 200 status to show a success status
     return json.dumps(response),status.HTTP_200_OK
+
+def Validate_Input (Mac, Serial):
+    valid = True
+
+    # Validating the Mac Address
+    if (re.search("^[a-fA-F0-9:]{17}|[a-fA-F0-9]{12}$", Mac) == None):
+        valid = False
+    
+    # Validating the Serial parameter by allowing only characters and numbers
+    if (re.search("^[A-Za-z0-9]*$", Serial) == None):
+        valid = False
+    
+    # Checking to see if the serial number is under the Maximum limit
+    if( len(Serial) > MAX_LENGTH ):
+        valid = False
+
+    return valid

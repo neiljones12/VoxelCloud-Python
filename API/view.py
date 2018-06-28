@@ -1,4 +1,4 @@
-from API.config import open_connection, close_connection, time, json, status
+from API.config import open_connection, close_connection, time, json, status, re
 
 def view_api(request):
     customer_Id = request.args.get('customer_Id')
@@ -16,6 +16,12 @@ def view_api(request):
             test = json_data["test"]
         else:
             test = False
+
+    valid_input = Validate_Input(json_data["customer_Id"])
+
+    if (not valid_input):
+        # Returning the HTTP code 204 because the server successfully processed the request, but is not returning any content.
+        return ('', 204)
 
     # Opening the connection to the database
     db_context = open_connection(test)
@@ -74,3 +80,15 @@ def view_api(request):
 
     # Return the JSON object and the Http 200 status to show a succcess status
     return json.dumps(response),status.HTTP_200_OK
+
+def Validate_Input (customer_Id):
+    valid = True
+
+    # Validating the customer_Id parameter by allowing only numbers
+    try: 
+        int(customer_Id)
+        
+    except ValueError:
+        valid = False
+
+    return valid

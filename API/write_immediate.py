@@ -1,4 +1,6 @@
-from API.config import open_connection, close_connection, time, json, status
+from API.config import open_connection, close_connection, time, json, status, re
+
+MAX_LENGTH = 15
 
 def write_immediate_api(request):
     data = request.data
@@ -13,6 +15,12 @@ def write_immediate_api(request):
         test = json_data["test"]
     else:
         test = False
+
+    valid_input = Validate_Input(json_data["mac"],json_data["serial"])
+
+    if (not valid_input):
+        # Returning the HTTP code 204 because the server successfully processed the request, but is not returning any content.
+        return ('', 204)
 
     # Appending the paramters to the query string
     query = 'SELECT * FROM public."Devices" WHERE "Mac_Address" = '+mac+' AND "Serial_Number" = '+serial
@@ -91,3 +99,20 @@ def write_immediate_api(request):
         # Return an Http 400 status to show a bad request because of invalid data
         return ('Invalid data, Please check the documentation', 400)
 
+
+def Validate_Input (Mac, Serial):
+    valid = True
+
+    # Validating the Mac Address
+    if (re.search("^[a-fA-F0-9:]{17}|[a-fA-F0-9]{12}$", Mac) == None):
+        valid = False
+    
+    # Validating the Serial parameter by allowing only characters and numbers
+    if (re.search("^[A-Za-z0-9]*$", Serial) == None):
+        valid = False
+    
+    # Checking to see if the serial number is under the Maximum limit
+    if( len(Serial) > MAX_LENGTH ):
+        valid = False
+
+    return valid

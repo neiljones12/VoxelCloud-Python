@@ -1,4 +1,4 @@
-from API.config import open_connection, close_connection, time, json, status
+from API.config import open_connection, close_connection, time, json, status, re
 import datetime
 
 def view_device_logs_api(request):
@@ -30,6 +30,13 @@ def view_device_logs_api(request):
     # Opening the connection to the database
     db_context = open_connection(test)
     cur = db_context.cursor() 
+
+    valid_input = Validate_Input(device_Id)
+
+    if (not valid_input):
+        # Returning the HTTP code 204 because the server successfully processed the request, but is not returning any content.
+        return ('', 204)
+
 
     query = 'SELECT * FROM public."DeviceEvents" e WHERE e."DeviceId" ='+device_Id
 
@@ -117,4 +124,16 @@ def date_check(from_date, to_date, date):
     if(to_date >= current_date and current_date >= from_date):
         return True
     else:
-        return False
+        return False      
+        
+def Validate_Input (device_Id):
+    valid = True
+
+    # Validating the device_Id parameter by allowing only numbers
+    try: 
+        int(device_Id)
+        
+    except ValueError:
+        valid = False
+
+    return valid
