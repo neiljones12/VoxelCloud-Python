@@ -412,6 +412,56 @@ class TestFunctions(unittest.TestCase):
         
         self.maxDiff = None
         self.assertEqual(str(data),expected_output)
+    
+    # Testing the edit device API with valid inputs
+    def test_edit_device(self):
+        edit_api = url + 'edit_device'
+
+        parameters = {
+                    "Name": "Device 5",
+                    "Compressor_status": 0,
+                    "Fan_status": 0,
+                    "Temperature": 70,
+                    "Ip_Address": "10.0.0.1",
+                    "Serial_Number": "1001",
+                    "Mac_Address": "3DF2C9A6B34F",
+                    "Communication_Frequency": 24,
+                    "Installation_Date": "6/13/2018 01:02:03",
+                    "Write_Frequency": 10,
+                    "Write_Time": 10,
+                    "Reporting_Url": "https://voxelcloud-demo-python.herokuapp.com/"
+                }
+                
+        data = requests.put(url = edit_api, data = json.dumps(parameters))
+        expected_output = '<Response [200]>'
+        
+        self.maxDiff = None
+        self.assertEqual(str(data),expected_output)
+    
+    # Testing the edit device API with in valid inputs
+    def test_edit_device_invalid(self):
+        edit_api = url + 'edit_device'
+
+        parameters = {
+                    "Name": "Device 5",
+                    "Compressor_status": 0,
+                    "Fan_status": 0,
+                    "Temperature": 70,
+                    "Ip_Address": "10.0.0.1",
+                    "Serial_Number": "1001",
+                    "Mac_Address": "3DF2C9A6B3AAAAA",
+                    "Communication_Frequency": 24,
+                    "Installation_Date": "6/13/2018 01:02:03",
+                    "Write_Frequency": 10,
+                    "Write_Time": 10,
+                    "Reporting_Url": "https://voxelcloud-demo-python.herokuapp.com/"
+                }
+                
+        data = requests.put(url = edit_api, data = json.dumps(parameters))
+        expected_output = '<Response [404]>'
+        
+        self.maxDiff = None
+        self.assertEqual(str(data),expected_output)
 
 if __name__ == '__main__':
     unittest.main()

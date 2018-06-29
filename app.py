@@ -11,6 +11,7 @@ from API.view_device_logs import view_device_logs_api
 from API.write_immediate import write_immediate_api
 from API.Device.add import add_device_api
 from API.Device.delete import delete_device_api
+from API.Device.edit import edit_device_api
 
 
 # Homepage route.
@@ -67,3 +68,8 @@ def add_device():
 @app.route('/delete_device', methods=['DELETE'])
 def delete_device():
     return(delete_device_api(request))
+
+# Edit device API
+@app.route('/edit_device', methods=['PUT'])
+def edit_device():
+    return(edit_device_api(request))
