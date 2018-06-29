@@ -387,7 +387,7 @@ class TestFunctions(unittest.TestCase):
         self.maxDiff = None
         self.assertEqual(str(data),expected_output)
     
-    # Testing the Add device API with valid inputs
+    # Testing the Delete device API with valid inputs
     def test_delete_device(self):
         delete_api = url + 'delete_device'
 
@@ -401,7 +401,7 @@ class TestFunctions(unittest.TestCase):
         self.maxDiff = None
         self.assertEqual(str(data),expected_output)
     
-    # Testing the Add device API with in valid inputs
+    # Testing the Delete device API with in valid inputs
     def test_delete_device_invalid(self):
         delete_api = url + 'delete_device'
 
