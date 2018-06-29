@@ -1,4 +1,4 @@
-from API.config import open_connection, close_connection, json, status, re
+from API.config import open_connection, close_connection, json, status, re, uuid, hashlib
 
 MIN_LENGTH = 6
 MAX_LENGTH = 50
@@ -30,7 +30,7 @@ def login_api(request):
     cur = db_context.cursor()
 
     # Executing the query
-    cur.execute('SELECT * FROM public."Customers" c WHERE c."Active" = true AND c."Customer_Number" = %s AND c."Password" = %s',(Customer_Number, Password))
+    cur.execute('SELECT * FROM public."Customers" c WHERE c."Active" = true AND c."Customer_Number" = %s', (Customer_Number,))
 
     # Fetching the result
     result_set = cur.fetchall()
@@ -38,24 +38,31 @@ def login_api(request):
 
     # Checking to see if we recieve any data
     if(result_set == []):
-        # Returning the HTTP code 204 because the server successfully processed the request, but is not returning any content.
+        # Returning the HTTP code 404 because a user could not be found.
         close_connection(cur, db_context)
-        return ('', 204)
+        return ('', 404)
 
     colnames = [desc[0] for desc in cur.description]
     customer = result_set[0]
 
     # Saving the result as a key, value pair
     result = dict(zip(colnames,customer))
-
     response = {}
-    response['Customer_Id'] = result['Id']
 
-    # Closing the databse connection before returning the result
-    close_connection(cur, db_context)
+    password_check = check_password(result['Password'], Password)
+    
+    if(password_check):
+        response['Customer_Id'] = result['Id']
 
-    # Return the JSON object and the Http 200 status to show a success status
-    return json.dumps(response),status.HTTP_200_OK
+        # Closing the databse connection before returning the result
+        close_connection(cur, db_context)
+
+        # Return the JSON object and the Http 200 status to show a success status
+        return json.dumps(response),status.HTTP_200_OK
+    
+    else:
+        # Returning the HTTP code 204 because the server successfully processed the request, but is not returning any content.
+        return ('', 204)
 
 def Validate_Input (Customer_Number, Password):
     valid = True
@@ -63,18 +70,6 @@ def Validate_Input (Customer_Number, Password):
     # Validating the Customer_Number parameter by allowing only characters and numbers
     if (re.search("^[A-Za-z0-9]*$", Customer_Number) == None):
         valid = False
-    
-    # Validating the Password parameter by allowing only characters and numbers
-
-    # at least include a digit number,
-    # at least a upcase and a lowcase letter
-    # at least a special characters
-    # Can contain a space
-
-    #condition = "^(?=.*[a-z])(?=.*[0-9])(?=.*[^\w\*]).{" + str(MIN_LENGTH) +"," + str(MAX_LENGTH) + "}$"
-
-    #if (re.search(condition, Password) == None):
-    valid = Password_Verification(Password)
 
     # validating against the maximum input length
     if (len(Customer_Number) > MAX_LENGTH):
@@ -82,31 +77,6 @@ def Validate_Input (Customer_Number, Password):
 
     return valid
 
-# Password verification without RegEx
-def Password_Verification(Password):
-
-    if(len(Password) > MAX_LENGTH):
-        return False
-    
-    contains_lower = False
-    constains_upper = False
-    contains_special_character = False
-
-    # Special character definition
-    special_characters= "_&@#%^$!"
-
-    # Iterating through the string
-    for c in Password:
-        if c.isupper():
-            constains_upper = True
-        if c.islower():
-            contains_lower = True
-        if c in special_characters:
-            contains_special_character = True
-
-    # Password is valid it it contains a lowercase character, uppercase character and a special character.
-    # All characters are permitted
-    if(contains_lower and constains_upper and contains_special_character):
-        return True
-    else:
-        return False
+def check_password(hashed_password, input_password):
+    password, salt = hashed_password.split(':')
+    return password == hashlib.sha256(salt.encode() + input_password.encode()).hexdigest()

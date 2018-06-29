@@ -20,7 +20,7 @@ def delete_device_api(request):
     db_context = open_connection(test)
     cur = db_context.cursor()
 
-    cur.execute('SELECT * FROM public."Devices" WHERE "Id" = %s', Id)
+    cur.execute('SELECT * FROM public."Devices" WHERE "Id" = %s', (Id,))
 
     # Fetching the result
     result_set = cur.fetchall()
@@ -31,7 +31,7 @@ def delete_device_api(request):
         return ('', 404)
 
     # Executing the query
-    cur.execute('UPDATE public."Devices" SET "Active" = False WHERE "Id" = %s', Id)
+    cur.execute('UPDATE public."Devices" SET "Active" = False WHERE "Id" = %s', (Id,))
     db_context.commit()
     # Closing the databse connection before returning the result
     close_connection(cur, db_context)

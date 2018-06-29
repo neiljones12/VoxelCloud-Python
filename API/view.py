@@ -28,7 +28,7 @@ def view_api(request):
     cur = db_context.cursor()
 
     # Executing the query
-    cur.execute('SELECT * FROM public."Customers" c, public."CustomerLocations" cl, public."Locations" l WHERE c."Id" = cl."CustomerId" AND cl."LocationId" = l."Id" And c."Id" = %s', (customer_Id))
+    cur.execute('SELECT * FROM public."Customers" c, public."CustomerLocations" cl, public."Locations" l WHERE c."Id" = cl."CustomerId" AND cl."LocationId" = l."Id" And c."Id" = %s', (customer_Id,))
 
     # Fetching the result
     result_set = cur.fetchall()
@@ -50,7 +50,7 @@ def view_api(request):
             'Location_Name': result['Name']
         }
 
-    cur.execute('SELECT * FROM public."Customers" c, public."CustomerDevices" cp, public."Devices" p WHERE p."Active" = True AND c."Id" = cp."CustomerId" AND cp."DeviceId" = p."Id" AND c."Id" = %s', (customer_Id))
+    cur.execute('SELECT * FROM public."Customers" c, public."CustomerDevices" cp, public."Devices" p WHERE p."Active" = True AND c."Id" = cp."CustomerId" AND cp."DeviceId" = p."Id" AND c."Id" = %s', (customer_Id,))
 
     # Fetching the result
     result_set_device_list = cur.fetchall()

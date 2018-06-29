@@ -6,6 +6,8 @@ import socket
 import urllib.request as req
 import datetime
 from flask import Flask, current_app, abort, request
+import uuid
+import hashlib
 
 # Importing the functions responsible for the database connection
 from Database.connection import open_connection, close_connection

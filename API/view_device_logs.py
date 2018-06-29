@@ -38,9 +38,9 @@ def view_device_logs_api(request):
         return ('', 204)
 
     if(test):
-        cur.execute('SELECT * FROM public."DeviceEvents" e WHERE e."DeviceId" = %s AND e."Id"=1',(device_Id))
+        cur.execute('SELECT * FROM public."DeviceEvents" e WHERE e."DeviceId" = %s AND e."Id"=1',(device_Id,))
     else:
-        cur.execute('SELECT * FROM public."DeviceEvents" e WHERE e."DeviceId" = %s',(device_Id))
+        cur.execute('SELECT * FROM public."DeviceEvents" e WHERE e."DeviceId" = %s',(device_Id,))
 
     # Fetching the result
     result_set = cur.fetchall()
