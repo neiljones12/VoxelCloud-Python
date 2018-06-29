@@ -21,6 +21,10 @@ def add_device_api(request):
 
     valid_input = Validate_Input(Name, Compressor_status, Fan_status, Temperature, Ip_Address, Serial_Number, Mac_Address, Communication_Frequency, Installation_Date, Write_Frequency, Write_Time, Reporting_Url)
 
+    # Saving the parameters as string
+    mac = "'" + Mac_Address + "'"
+    serial =  "'" +Serial_Number+ "'"
+
     if (not valid_input):
         # Returning the HTTP code 400. Bad request
         return ('Invalid data, Please check the documentation', 400)
@@ -36,6 +40,24 @@ def add_device_api(request):
 
     db_context = open_connection(test)
     cur = db_context.cursor()
+
+    # Checking to see if a device with the same Mac Address and Serial number already exists
+    query_check = 'SELECT * FROM public."Devices" WHERE "Mac_Address" = '+mac+' AND "Serial_Number" = '+serial
+    
+    # Executing the query
+    cur.execute(query_check)
+
+    # Fetching the result
+    result_set_check = cur.fetchall()
+
+    exists = False
+    # Checking to see if the device exists
+    if(result_set_check == []):
+        exists = True
+
+    if (exists):
+        # Returning the HTTP code 400. Bad request
+        return ('Device already exists', 204)
 
     Active = 'true'
     
