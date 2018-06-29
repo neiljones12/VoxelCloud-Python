@@ -3,13 +3,15 @@ from API.config import open_connection, close_connection, write_freq_display, co
 MAX_LENGTH = 15
 
 def read_api(request):
+    """The Read API returns the current status of a device"""
+
+    # Starting a timer
     start = int(round(time.time() * 1000))
     
     # Reading the parameters from the body
     data = request.data
     json_data = json.loads(data)
     
-    # Saving the parameters as string
     mac = json_data["mac"]
     serial =  json_data["serial"]
 
@@ -79,18 +81,13 @@ def read_api(request):
     return json.dumps(response),status.HTTP_200_OK
 
 def Validate_Input (Mac, Serial):
+    """This function is responsible to validate the input"""
     valid = True
 
     # Validating the Mac Address
     if re.search("^[a-fA-F0-9:]{17}|[a-fA-F0-9]{12}$", Mac) == None:
         valid = False
     
-    
-    # Validating the Serial parameter by allowing only characters and numbers
-    #if (re.search("^[A-Za-z0-9]*$", Serial) == None):
-    #    valid = False
-    
-    # Checking to see if the serial number is under the Maximum limit
     if len(Serial) > MAX_LENGTH:
         valid = False
 

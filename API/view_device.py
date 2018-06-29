@@ -1,6 +1,7 @@
 from API.config import open_connection, close_connection, time, json, status, re
 
 def view_device_api(request):
+    """The View Device API returns the current status of the device to load the dashboard"""
     customer_Id = request.args.get('customer_Id')
     device_Id = request.args.get('device_Id')
     test = False
@@ -73,6 +74,7 @@ def view_device_api(request):
     return json.dumps(response),status.HTTP_200_OK
 
 def Validate_Input (customer_Id, device_Id):
+    """This function is responsible to validate the input"""
     valid = True
 
     # Validating the customer_Id parameter by allowing only numbers

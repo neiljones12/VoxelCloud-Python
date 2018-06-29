@@ -8,14 +8,10 @@ import datetime
 from flask import current_app, abort, request
 import uuid
 import hashlib
-
-# Importing the functions responsible for the database connection
 from Database.connection import open_connection, close_connection
 
-### Below are the helper methods
-
-# Function to return the compressor status
 def conpressor_status_display(status):
+    """ A helper function to interpret the compressor status"""
     result = ''
     if status == 0:
         result = 'No event'
@@ -28,8 +24,8 @@ def conpressor_status_display(status):
         
     return result
 
-# function to return the write frequency status
 def write_freq_display(status):
+    """A helper function to interpret the write frequency"""
     result = ''
     if status == 0:
         result = 'No write'

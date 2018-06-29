@@ -1,6 +1,7 @@
 from API.config import open_connection, close_connection, time, json, status, re
 
 def view_api(request):
+    """The View API returns a list of all the devices assigned to a customer"""
     customer_Id = request.args.get('customer_Id')
     test = False
     if (customer_Id == None):

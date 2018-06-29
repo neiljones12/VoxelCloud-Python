@@ -2,6 +2,8 @@ from API.config import open_connection, close_connection, time, json, status, re
 import datetime
 
 def view_device_logs_api(request):
+    """The View Device Logs API returns the logs for a device"""
+    
     # Reading the parameters from the argument
     device_Id = request.args.get('device_Id')
     from_date = request.args.get('from_date')
@@ -98,6 +100,7 @@ def view_device_logs_api(request):
     return json.dumps(response),status.HTTP_200_OK
 
 def date_check(from_date, to_date, date):
+    """This function is responsible to check if the date of the log falls between the filter dates"""
     # parsing through the string to seperate the Year, month and day
     from_date_year = int(from_date[0])
     from_date_month = int(from_date[1])
@@ -123,6 +126,7 @@ def date_check(from_date, to_date, date):
         return False      
         
 def Validate_Input (device_Id):
+    """This function is responsible to validate the input"""
     valid = True
 
     # Validating the device_Id parameter by allowing only numbers

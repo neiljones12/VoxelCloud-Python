@@ -10,8 +10,8 @@ url = 'http://127.0.0.1:5000/'
 
 class TestFunctions(unittest.TestCase):
     
-    # Testing the Login API with valid inputs
     def test_login(self):
+        """Testing the Login API with valid inputs."""
         login_api = url + 'login'
 
         parameters = {
@@ -32,8 +32,8 @@ class TestFunctions(unittest.TestCase):
         self.maxDiff = None
         self.assertEqual(data,check)
 
-    # Testing the Login API with invalid inputs
     def test_login_invalid(self):
+        """Testing the Login API with invalid inputs."""
         login_api = url + 'login'
 
         # SQL Injection
@@ -49,8 +49,8 @@ class TestFunctions(unittest.TestCase):
         self.maxDiff = None
         self.assertEqual(str(data),expected_output)
 
-    # Testing the Login API with invalid inputs
     def test_login_invalid_Password(self):
+        """Testing the Login API with invalid inputs."""
         login_api = url + 'login'
 
         parameters = {
@@ -65,8 +65,8 @@ class TestFunctions(unittest.TestCase):
         self.maxDiff = None
         self.assertEqual(str(data),expected_output)
     
-    # Testing the Read API with valid inputs
     def test_read(self):
+        """Testing the Read API with valid inputs."""
         read_api = url + 'read'
 
         parameters = {
@@ -85,8 +85,8 @@ class TestFunctions(unittest.TestCase):
         self.maxDiff = None
         self.assertEqual(data,check)
 
-    # Testing the Read API with invalid inputs
     def test_read_invalid(self):
+        """Testing the Read API with invalid inputs."""
         read_api = url + 'read'
 
         parameters = {
@@ -101,8 +101,8 @@ class TestFunctions(unittest.TestCase):
         self.maxDiff = None
         self.assertEqual(str(data),expected_output)
 
-    # Testing the View API with valid inputs
     def test_view(self):
+        """Testing the View API with valid inputs."""
         read_api = url + 'view'
 
         parameters = {
@@ -136,9 +136,8 @@ class TestFunctions(unittest.TestCase):
         self.maxDiff = None
         self.assertEqual(data,check)
 
-
-    # Testing the View API with invalid inputs
     def test_view_invalid(self):
+        """Testing the View API with invalid inputs."""
         read_api = url + 'view'
 
         parameters = {
@@ -152,8 +151,8 @@ class TestFunctions(unittest.TestCase):
         self.maxDiff = None
         self.assertEqual(str(data),expected_output)
 
-    # Testing the view_device API with valid inputs
     def test_view_device(self):
+        """Testing the view_device API with valid inputs."""
         read_api = url + 'view_device'
 
         parameters = {
@@ -188,8 +187,8 @@ class TestFunctions(unittest.TestCase):
         self.maxDiff = None
         self.assertEqual(data,check)
 
-    # Testing the view_device API with invalid inputs
     def test_view_device_invalid(self):
+        """Testing the view_device API with invalid inputs."""
         read_api = url + 'view_device'
 
         parameters = {
@@ -204,8 +203,8 @@ class TestFunctions(unittest.TestCase):
         self.maxDiff = None
         self.assertEqual(str(data),expected_output)
 
-     # Testing the view_device_logs API with valid inputs
     def test_view_device_logs(self):
+        """Testing the view_device_logs API with valid inputs."""
         read_api = url + 'view_device_logs'
 
         parameters = {
@@ -236,8 +235,8 @@ class TestFunctions(unittest.TestCase):
         self.maxDiff = None
         self.assertEqual(data,check)
     
-    # Testing the view_device_logs API with invalid inputs
     def test_view_device_logs_invalid(self):
+        """Testing the view_device_logs API with invalid inputs."""
         read_api = url + 'view_device_logs'
 
         parameters = {
@@ -251,9 +250,8 @@ class TestFunctions(unittest.TestCase):
         self.maxDiff = None
         self.assertEqual(str(data),expected_output)
 
-
-    # Testing the write API with valid inputs
     def test_write(self):
+        """Testing the write API with valid inputs."""
         read_api = url + 'write'
 
         parameters = {
@@ -272,8 +270,8 @@ class TestFunctions(unittest.TestCase):
         self.maxDiff = None
         self.assertEqual(str(data),expected_output)
 
-        # Testing the write API with invalid inputs
     def test_write_invalid(self):
+        """Testing the write API with invalid inputs."""
         read_api = url + 'write'
 
         parameters = {
@@ -292,8 +290,8 @@ class TestFunctions(unittest.TestCase):
         self.maxDiff = None
         self.assertEqual(str(data),expected_output)
 
-    # Testing the write_immediate API with valid inputs
     def test_write_immediate(self):
+        """Testing the write_immediate API with valid inputs."""
         read_api = url + 'write_immediate'
 
         parameters = {
@@ -315,8 +313,8 @@ class TestFunctions(unittest.TestCase):
         self.maxDiff = None
         self.assertEqual(str(data),expected_output)
 
-    # Testing the write_immediate API with invalid inputs
     def test_write_immediate_invalid(self):
+        """Testing the write_immediate API with invalid inputs."""
         read_api = url + 'write_immediate'
 
         parameters = {
@@ -337,8 +335,8 @@ class TestFunctions(unittest.TestCase):
         self.maxDiff = None
         self.assertEqual(str(data),expected_output)
     
-    # Testing the Add device API with valid inputs
     def test_add_device(self):
+        """Testing the Add device API with valid inputs."""
         add_api = url + 'add_device'
 
         parameters = {
@@ -362,8 +360,8 @@ class TestFunctions(unittest.TestCase):
         self.maxDiff = None
         self.assertEqual(str(data),expected_output)
     
-    # Testing the Add device API with invalid inputs
     def test_add_device_invalid(self):
+        """Testing the Add device API with invalid inputs."""
         read_api = url + 'add_device'
 
         parameters = {
@@ -387,8 +385,8 @@ class TestFunctions(unittest.TestCase):
         self.maxDiff = None
         self.assertEqual(str(data),expected_output)
     
-    # Testing the Delete device API with valid inputs
     def test_delete_device(self):
+        """Testing the Delete device API with valid inputs."""
         delete_api = url + 'delete_device'
 
         parameters = {
@@ -401,8 +399,8 @@ class TestFunctions(unittest.TestCase):
         self.maxDiff = None
         self.assertEqual(str(data),expected_output)
     
-    # Testing the Delete device API with in valid inputs
     def test_delete_device_invalid(self):
+        """Testing the Delete device API with in valid inputs."""
         delete_api = url + 'delete_device'
 
         parameters = {
@@ -415,8 +413,8 @@ class TestFunctions(unittest.TestCase):
         self.maxDiff = None
         self.assertEqual(str(data),expected_output)
     
-    # Testing the edit device API with valid inputs
     def test_edit_device(self):
+        """Testing the edit device API with valid inputs."""
         edit_api = url + 'edit_device'
 
         parameters = {
@@ -440,8 +438,8 @@ class TestFunctions(unittest.TestCase):
         self.maxDiff = None
         self.assertEqual(str(data),expected_output)
     
-    # Testing the edit device API with in valid inputs
     def test_edit_device_invalid(self):
+        """Testing the edit device API with in valid inputs."""
         edit_api = url + 'edit_device'
 
         parameters = {

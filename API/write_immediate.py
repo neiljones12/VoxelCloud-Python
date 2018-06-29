@@ -3,6 +3,7 @@ from API.config import open_connection, close_connection, time, json, status, re
 MAX_LENGTH = 15
 
 def write_immediate_api(request):
+    """The Write Immidiate API is used to log each transaction to the database"""
     data = request.data
     json_data = json.loads(data)
     
@@ -98,6 +99,7 @@ def write_immediate_api(request):
 
 
 def Validate_Input (Mac, Serial):
+    """This function is responsible to validate the input"""
     valid = True
 
     # Validating the Mac Address

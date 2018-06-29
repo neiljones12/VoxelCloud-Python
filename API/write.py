@@ -3,6 +3,7 @@ from API.config import open_connection, close_connection, time, json, status, re
 MAX_LENGTH = 15
 
 def write_api(request):
+    """The Write API updates the current state of the device in the database"""
     data = request.data
     json_data = json.loads(data)
     
@@ -78,6 +79,7 @@ def write_api(request):
         return ('Invalid data, Please check the documentation', 400)
 
 def Validate_Input (Mac, Serial):
+    """This function is responsible to validate the input"""
     valid = True
 
     # Validating the Mac Address
