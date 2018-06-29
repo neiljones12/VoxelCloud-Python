@@ -420,6 +420,275 @@
       </div>
     </div>
 
+    <br>
+
+    <div class="card">
+      <div class="card-header">
+        add_device API
+      </div>
+      <div class="card-body">
+        <class="card-text"> API Endpoint:
+          <span style="color:#00a8ff">https://voxelcloud-demo-python.herokuapp.com/add_device</span>
+          </p>
+          <class="card-text"> API Type:
+            <span style="color:#00a8ff">POST</span>
+            </p>
+            <p>Expected data to be passed in the body of the request</p>
+
+            <table class="table">
+              <thead class="thead-light">
+                <tr>
+                  <th scope="col">paramerter</th>
+                  <th scope="col">Description</th>
+                  <th scope="col">Accepted values</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <th scope="row">Name</th>
+                  <td>Device Name</td>
+                  <td>String</td>
+                </tr>
+                <tr>
+                  <th scope="row">Compressor_status</th>
+                  <td>Compressor Status</td>
+                  <td>1=On 0=Off</td>
+                </tr>
+                <tr>
+                  <th scope="row">Fan_status</th>
+                  <td>Fan Status</td>
+                  <td>1=On 0=Off</td>
+                </tr>
+                <tr>
+                  <th scope="row">Temperature</th>
+                  <td>Temperature (in F)</td>
+                  <td>Integer</td>
+                </tr>
+                <tr>
+                  <th scope="row">Ip_Address</th>
+                  <td>IP Address</td>
+                  <td>String(example 255.255.255.255)</td>
+                </tr>
+                <tr>
+                  <th scope="row">Serial_Number</th>
+                  <td>Device serial number</td>
+                  <td>String</td>
+                </tr>
+                <tr>
+                  <th scope="row">Mac_Address</th>
+                  <td>Device mac number</td>
+                  <td>String</td>
+                </tr>
+                <tr>
+                  <th scope="row">Communication_Frequency</th>
+                  <td>Device communication frequency</td>
+                  <td>24 = Hourly, 48 = Every 30 minutes</td>
+                </tr>
+                <tr>
+                  <th scope="row">Installation_Date</th>
+                  <td>Device installation date</td>
+                  <td>String (d/m/Y H:M:S)</td>
+                </tr>
+                <tr>
+                  <th scope="row">Write_Frequency</th>
+                  <td>Device write frequency</td>
+                  <td>0 No Write / 10 = seconds / or 15 / 30 / 60 Seconds power sampling / reporting</td>
+                </tr>
+                <tr>
+                  <th scope="row">Write_Time</th>
+                  <td>Device write time</td>
+                  <td>Integer (In hours)</td>
+                </tr>
+                <tr>
+                  <th scope="row">Reporting_Url</th>
+                  <td>Device reporting url</td>
+                  <td>String</td>
+                </tr>
+              </tbody>
+            </table>
+
+            <hr>
+            <p>An example of the body of the request</p>
+            <code>
+              {
+                "Name": "Device 5",
+                "Compressor_status": 0,
+                "Fan_status": 0,
+                "Temperature": 70,
+                "Ip_Address": "10.0.0.1",
+                "Serial_Number": "1005",
+                "Mac_Address": "3DF2C9A6B15A",
+                "Communication_Frequency": 24,
+                "Installation_Date": "6/13/2018 01:02:03",
+                "Write_Frequency": 10,
+                "Write_Time": 10,
+                "Reporting_Url": "https://voxelcloud-demo-python.herokuapp.com/"
+              }
+            </code>
+      </div>
+    </div>
+
+    <br>
+
+    <div class="card">
+      <div class="card-header">
+        edit_device API
+      </div>
+      <div class="card-body">
+        <class="card-text"> API Endpoint:
+          <span style="color:#00a8ff">https://voxelcloud-demo-python.herokuapp.com/edit_device</span>
+          </p>
+          <class="card-text"> API Type:
+            <span style="color:#00a8ff">PUT</span>
+            </p>
+            <p>Expected data to be passed in the body of the request</p>
+
+            <table class="table">
+              <thead class="thead-light">
+                <tr>
+                  <th scope="col">paramerter</th>
+                  <th scope="col">Description</th>
+                  <th scope="col">Accepted values</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <th scope="row">Name</th>
+                  <td>Device Name</td>
+                  <td>String</td>
+                </tr>
+                <tr>
+                  <th scope="row">Compressor_status</th>
+                  <td>Compressor Status</td>
+                  <td>1=On 0=Off</td>
+                </tr>
+                <tr>
+                  <th scope="row">Fan_status</th>
+                  <td>Fan Status</td>
+                  <td>1=On 0=Off</td>
+                </tr>
+                <tr>
+                  <th scope="row">Temperature</th>
+                  <td>Temperature (in F)</td>
+                  <td>Integer</td>
+                </tr>
+                <tr>
+                  <th scope="row">Ip_Address</th>
+                  <td>IP Address</td>
+                  <td>String(example 255.255.255.255)</td>
+                </tr>
+                <tr>
+                  <th scope="row">Serial_Number</th>
+                  <td>Device serial number</td>
+                  <td>String</td>
+                </tr>
+                <tr>
+                  <th scope="row">Mac_Address</th>
+                  <td>Device mac number</td>
+                  <td>String</td>
+                </tr>
+                <tr>
+                  <th scope="row">Communication_Frequency</th>
+                  <td>Device communication frequency</td>
+                  <td>24 = Hourly, 48 = Every 30 minutes</td>
+                </tr>
+                <tr>
+                  <th scope="row">Installation_Date</th>
+                  <td>Device installation date</td>
+                  <td>String (d/m/Y H:M:S)</td>
+                </tr>
+                <tr>
+                  <th scope="row">Write_Frequency</th>
+                  <td>Device write frequency</td>
+                  <td>0 No Write / 10 = seconds / or 15 / 30 / 60 Seconds power sampling / reporting</td>
+                </tr>
+                <tr>
+                  <th scope="row">Write_Time</th>
+                  <td>Device write time</td>
+                  <td>Integer (In hours)</td>
+                </tr>
+                <tr>
+                  <th scope="row">Reporting_Url</th>
+                  <td>Device reporting url</td>
+                  <td>String</td>
+                </tr>
+              </tbody>
+            </table>
+
+            <hr>
+            <p>An example of the body of the request</p>
+            <code>
+              {
+                "Name": "Device 5",
+                "Compressor_status": 0,
+                "Fan_status": 0,
+                "Temperature": 70,
+                "Ip_Address": "10.0.0.1",
+                "Serial_Number": "1005",
+                "Mac_Address": "3DF2C9A6B15A",
+                "Communication_Frequency": 24,
+                "Installation_Date": "6/13/2018 01:02:03",
+                "Write_Frequency": 10,
+                "Write_Time": 10,
+                "Reporting_Url": "https://voxelcloud-demo-python.herokuapp.com/"
+              }
+            </code>
+      </div>
+    </div>
+
+    <br>
+    
+    <div class="card">
+      <div class="card-header">
+        delete_device API
+      </div>
+      <div class="card-body">
+        <class="card-text"> API Endpoint:
+          <span style="color:#00a8ff">https://voxelcloud-demo-python.herokuapp.com/delete_device</span>
+          </p>
+          <class="card-text"> API Type:
+            <span style="color:#00a8ff">DELETE</span>
+            </p>
+            <p>Expected data to be passed in the body of the request</p>
+
+            <table class="table">
+              <thead class="thead-light">
+                <tr>
+                  <th scope="col">paramerter</th>
+                  <th scope="col">Description</th>
+                  <th scope="col">Accepted values</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <th scope="row">device_id</th>
+                  <td>Device Id</td>
+                  <td>Integer</td>
+                </tr>
+              </tbody>
+            </table>
+
+            <hr>
+            <p>An example of the body of the request</p>
+            <code>
+              {
+                "Name": "Device 5",
+                "Compressor_status": 0,
+                "Fan_status": 0,
+                "Temperature": 70,
+                "Ip_Address": "10.0.0.1",
+                "Serial_Number": "1005",
+                "Mac_Address": "3DF2C9A6B15A",
+                "Communication_Frequency": 24,
+                "Installation_Date": "6/13/2018 01:02:03",
+                "Write_Frequency": 10,
+                "Write_Time": 10,
+                "Reporting_Url": "https://voxelcloud-demo-python.herokuapp.com/"
+              }
+            </code>
+      </div>
+    </div>
+
   </div>
   <br>
 
