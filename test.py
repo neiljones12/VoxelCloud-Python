@@ -3,6 +3,8 @@ import flask_testing
 from flask import request
 import requests
 import json
+import random
+import string
 
 url = 'http://127.0.0.1:5000/'
 
@@ -14,7 +16,7 @@ class TestFunctions(unittest.TestCase):
 
         parameters = {
                 "Customer_Number": "AA1122",
-                "Password": "password",
+                "Password": "Welc0me!",
                 "test":True
             }
 
@@ -346,7 +348,7 @@ class TestFunctions(unittest.TestCase):
                 "Temperature": 70,
                 "Ip_Address": "10.0.0.1",
                 "Serial_Number": "1005",
-                "Mac_Address": "3DF2C9A6B34A",
+                "Mac_Address": "3DF1C9A6B35A",
                 "Communication_Frequency": 24,
                 "Installation_Date": "6/13/2018 01:02:03",
                 "Write_Frequency": 10,

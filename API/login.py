@@ -1,6 +1,7 @@
 from API.config import open_connection, close_connection, json, status, re
 
-MAX_LENGTH = 15
+MIN_LENGTH = 6
+MAX_LENGTH = 50
 
 def login_api(request):
     # Reading the parameters from the body
@@ -66,11 +67,19 @@ def Validate_Input (Customer_Number, Password):
         valid = False
     
     # Validating the Password parameter by allowing only characters and numbers
-    if (re.search("^[A-Za-z0-9]*$", Password) == None):
+
+    # at least include a digit number,
+    # at least a upcase and a lowcase letter
+    # at least a special characters
+    # Can contain a space
+
+    condition = "^(?=.*[a-z])(?=.*[0-9])(?=.*[^\w\*]).{" + str(MIN_LENGTH) +"," + str(MAX_LENGTH) + "}$"
+
+    if (re.search(condition, Password) == None):
         valid = False
 
     # validating against the maximum input length
-    if (len(Customer_Number) > MAX_LENGTH or len(Password) > MAX_LENGTH):
+    if (len(Customer_Number) > MAX_LENGTH):
         valid = False
 
     return valid

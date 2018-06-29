@@ -49,10 +49,10 @@ def add_device_api(request):
 
     # Fetching the result
     result_set_check = cur.fetchall()
-
+    
     exists = False
     # Checking to see if the device exists
-    if(result_set_check == []):
+    if(result_set_check != []):
         exists = True
 
     if (exists):
