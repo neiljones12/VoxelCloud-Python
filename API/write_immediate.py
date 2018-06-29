@@ -7,8 +7,8 @@ def write_immediate_api(request):
     json_data = json.loads(data)
     
     # Saving the parameters as string
-    mac = "'" + json_data["mac"] + "'"
-    serial =  "'" +json_data["serial"]+ "'"
+    mac = json_data["mac"]
+    serial = json_data["serial"]
 
     # Checking to see if the test value is passed to the API, If test is true, the testing database is used
     if "test" in json_data:
@@ -23,17 +23,15 @@ def write_immediate_api(request):
         return ('', 204)
 
     # Appending the paramters to the query string
-    query = 'SELECT * FROM public."Devices" WHERE "Mac_Address" = '+mac+' AND "Serial_Number" = '+serial
-    
     db_context = open_connection(test)
     cur = db_context.cursor()
 
     # Executing the query
-    cur.execute(query)
+    cur.execute('SELECT * FROM public."Devices" WHERE "Mac_Address" = %s AND "Serial_Number" = %s', (mac, serial))
 
     # Fetching the result
     result_set = cur.fetchall()
-
+    print(result_set)
     if (result_set == []):
         # Returning the HTTP code 204 because the server successfully processed the request, but is not returning any content.
         close_connection(cur, db_context)

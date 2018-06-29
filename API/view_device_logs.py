@@ -37,14 +37,10 @@ def view_device_logs_api(request):
         # Returning the HTTP code 204 because the server successfully processed the request, but is not returning any content.
         return ('', 204)
 
-
-    query = 'SELECT * FROM public."DeviceEvents" e WHERE e."DeviceId" ='+device_Id
-
     if(test):
-        query += ' AND e."Id"=1'
-
-    # Executing the query
-    cur.execute(query)
+        cur.execute('SELECT * FROM public."DeviceEvents" e WHERE e."DeviceId" = %s AND e."Id"=1',(device_Id))
+    else:
+        cur.execute('SELECT * FROM public."DeviceEvents" e WHERE e."DeviceId" = %s',(device_Id))
 
     # Fetching the result
     result_set = cur.fetchall()

@@ -9,8 +9,8 @@ def login_api(request):
     json_data = json.loads(data)
     
     # Saving the parameters as string
-    Customer_Number = "'" + json_data["Customer_Number"] + "'"
-    Password =  "'" +json_data["Password"]+ "'"
+    Customer_Number = json_data["Customer_Number"]
+    Password =  json_data["Password"]
 
     # Checking to see if the test value is passed to the API, If test is true, the testing database is used
     if "test" in json_data:
@@ -25,14 +25,12 @@ def login_api(request):
         # Returning the HTTP code 204 because the server successfully processed the request, but is not returning any content.
         return ('', 204)
 
-    # Appending the paramters to the query string
-    query = 'SELECT * FROM public."Customers" c WHERE c."Active" = true AND c."Customer_Number" = '+Customer_Number+' AND c."Password" = '+Password
     
     db_context = open_connection(test)
     cur = db_context.cursor()
 
     # Executing the query
-    cur.execute(query)
+    cur.execute('SELECT * FROM public."Customers" c WHERE c."Active" = true AND c."Customer_Number" = %s AND c."Password" = %s',(Customer_Number, Password))
 
     # Fetching the result
     result_set = cur.fetchall()
@@ -73,13 +71,21 @@ def Validate_Input (Customer_Number, Password):
     # at least a special characters
     # Can contain a space
 
-    condition = "^(?=.*[a-z])(?=.*[0-9])(?=.*[^\w\*]).{" + str(MIN_LENGTH) +"," + str(MAX_LENGTH) + "}$"
+    #condition = "^(?=.*[a-z])(?=.*[0-9])(?=.*[^\w\*]).{" + str(MIN_LENGTH) +"," + str(MAX_LENGTH) + "}$"
 
-    if (re.search(condition, Password) == None):
-        valid = False
+    #if (re.search(condition, Password) == None):
+    valid = Password_Verification(Password)
 
     # validating against the maximum input length
     if (len(Customer_Number) > MAX_LENGTH):
         valid = False
 
     return valid
+
+# Password verification without RegEx
+def Password_Verification(Password):
+    result = True
+
+    
+
+    return result

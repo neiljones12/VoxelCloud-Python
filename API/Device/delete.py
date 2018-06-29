@@ -12,8 +12,6 @@ def delete_device_api(request):
         # return HTTP 400. Bad request
         return ('Invalid data, Please check the documentation', 400)
 
-    query = 'SELECT * FROM public."Devices" WHERE "Id" = '+Id
-    
     if "test" in json_data:
         test = json_data["test"]
     else:
@@ -22,8 +20,7 @@ def delete_device_api(request):
     db_context = open_connection(test)
     cur = db_context.cursor()
 
-    # Executing the query
-    cur.execute(query)
+    cur.execute('SELECT * FROM public."Devices" WHERE "Id" = %s', Id)
 
     # Fetching the result
     result_set = cur.fetchall()
@@ -33,10 +30,8 @@ def delete_device_api(request):
         close_connection(cur, db_context)
         return ('', 404)
 
-    # Setting the active flag as false to disable the device
-    query_delete = 'UPDATE public."Devices" SET "Active" = False WHERE "Id" = '+Id
     # Executing the query
-    cur.execute(query_delete)
+    cur.execute('UPDATE public."Devices" SET "Active" = False WHERE "Id" = %s', Id)
     db_context.commit()
     # Closing the databse connection before returning the result
     close_connection(cur, db_context)

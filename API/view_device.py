@@ -30,10 +30,8 @@ def view_device_api(request):
     db_context = open_connection(test)
     cur = db_context.cursor()
 
-    query = 'SELECT * FROM public."CustomerDevices" cp, public."Devices" p WHERE cp."DeviceId" = p."Id" AND cp."CustomerId" = '+customer_Id+' AND p."Id" ='+device_Id
-
     # Executing the query
-    cur.execute(query)
+    cur.execute('SELECT * FROM public."CustomerDevices" cp, public."Devices" p WHERE cp."DeviceId" = p."Id" AND cp."CustomerId" = %s AND p."Id" = %s', (customer_Id, device_Id))
 
     # Fetching the result
     result_set = cur.fetchall()

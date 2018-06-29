@@ -9,7 +9,7 @@ def view_api(request):
         json_data = json.loads(data)
         
         # Saving the parameters as string
-        customer_Id =  str(json_data["customer_Id"])
+        customer_Id =  json_data["customer_Id"]
     
         # Checking to see if the test value is passed to the API, If test is true, the testing database is used
         if "test" in json_data:
@@ -17,7 +17,7 @@ def view_api(request):
         else:
             test = False
 
-    valid_input = Validate_Input(json_data["customer_Id"])
+    valid_input = Validate_Input(customer_Id)
 
     if (not valid_input):
         # Returning the HTTP code 204 because the server successfully processed the request, but is not returning any content.
@@ -27,10 +27,8 @@ def view_api(request):
     db_context = open_connection(test)
     cur = db_context.cursor()
 
-    query = 'SELECT * FROM public."Customers" c, public."CustomerLocations" cl, public."Locations" l WHERE c."Id" = cl."CustomerId" AND cl."LocationId" = l."Id" And c."Id" = '+customer_Id
-
     # Executing the query
-    cur.execute(query)
+    cur.execute('SELECT * FROM public."Customers" c, public."CustomerLocations" cl, public."Locations" l WHERE c."Id" = cl."CustomerId" AND cl."LocationId" = l."Id" And c."Id" = %s', (customer_Id))
 
     # Fetching the result
     result_set = cur.fetchall()
@@ -52,9 +50,7 @@ def view_api(request):
             'Location_Name': result['Name']
         }
 
-    query_device_list = 'SELECT * FROM public."Customers" c, public."CustomerDevices" cp, public."Devices" p WHERE p."Active" = True AND c."Id" = cp."CustomerId" AND cp."DeviceId" = p."Id" AND c."Id" = '+customer_Id
-
-    cur.execute(query_device_list)
+    cur.execute('SELECT * FROM public."Customers" c, public."CustomerDevices" cp, public."Devices" p WHERE p."Active" = True AND c."Id" = cp."CustomerId" AND cp."DeviceId" = p."Id" AND c."Id" = %s', (customer_Id))
 
     # Fetching the result
     result_set_device_list = cur.fetchall()

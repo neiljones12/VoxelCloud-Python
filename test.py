@@ -347,8 +347,8 @@ class TestFunctions(unittest.TestCase):
                 "Fan_status": 0,
                 "Temperature": 70,
                 "Ip_Address": "10.0.0.1",
-                "Serial_Number": "1005",
-                "Mac_Address": "3DF1C9A6B35A",
+                "Serial_Number": "1008",
+                "Mac_Address": "3DF2D6B7C34F",
                 "Communication_Frequency": 24,
                 "Installation_Date": "6/13/2018 01:02:03",
                 "Write_Frequency": 10,
@@ -406,7 +406,7 @@ class TestFunctions(unittest.TestCase):
         delete_api = url + 'delete_device'
 
         parameters = {
-                "device_id" : "100"
+                "device_id" : "9"
             }
                 
         data = requests.delete(url = delete_api, data = json.dumps(parameters))

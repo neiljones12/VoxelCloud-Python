@@ -21,10 +21,6 @@ def add_device_api(request):
 
     valid_input = Validate_Input(Name, Compressor_status, Fan_status, Temperature, Ip_Address, Serial_Number, Mac_Address, Communication_Frequency, Installation_Date, Write_Frequency, Write_Time, Reporting_Url)
 
-    # Saving the parameters as string
-    mac = "'" + Mac_Address + "'"
-    serial =  "'" +Serial_Number+ "'"
-
     if (not valid_input):
         # Returning the HTTP code 400. Bad request
         return ('Invalid data, Please check the documentation', 400)
@@ -41,11 +37,8 @@ def add_device_api(request):
     db_context = open_connection(test)
     cur = db_context.cursor()
 
-    # Checking to see if a device with the same Mac Address and Serial number already exists
-    query_check = 'SELECT * FROM public."Devices" WHERE "Mac_Address" = '+mac+' AND "Serial_Number" = '+serial
-    
     # Executing the query
-    cur.execute(query_check)
+    cur.execute('SELECT * FROM public."Devices" WHERE "Mac_Address" = %s AND "Serial_Number" = %s', (Mac_Address, Serial_Number))
 
     # Fetching the result
     result_set_check = cur.fetchall()
@@ -56,7 +49,7 @@ def add_device_api(request):
         exists = True
 
     if (exists):
-        # Returning the HTTP code 400. Bad request
+        # Returning the HTTP code 204. Bad request
         return ('Device already exists', 204)
 
     Active = 'true'
@@ -174,9 +167,6 @@ def Validate_Input(Name, Compressor_status, Fan_status, Temperature, Ip_Address,
     if (re.search("^[a-fA-F0-9:]{17}|[a-fA-F0-9]{12}$", Mac_Address) == None):
         valid = False
     
-    # Validating the Serial parameter by allowing only characters and numbers
-    if (re.search("^[A-Za-z0-9]*$", Serial_Number) == None):
-        valid = False
     
     # Checking to see if the serial number is under the Maximum limit
     if( len(Serial_Number) > MAX_LENGTH ):
