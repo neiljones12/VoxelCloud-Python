@@ -84,8 +84,31 @@ def Validate_Input (Customer_Number, Password):
 
 # Password verification without RegEx
 def Password_Verification(Password):
-    result = True
 
+    if(len(Password) > MAX_LENGTH):
+        return False
     
+    contains_lower = False
+    constains_upper = False
+    contains_special_character = False
 
-    return result
+    # Special character definition
+    special_characters= "_&@#%^$!"
+
+    # Iterating through the string
+    for c in Password:
+        if c.isupper():
+            constains_upper = True
+        if c.islower():
+            contains_lower = True
+        if c in special_characters:
+            contains_special_character = True
+        
+        print(c)
+
+    # Password is valid it it contains a lowercase character, uppercase character and a special character.
+    # All characters are permitted
+    if(contains_lower and constains_upper and contains_special_character):
+        return True
+    else:
+        return False

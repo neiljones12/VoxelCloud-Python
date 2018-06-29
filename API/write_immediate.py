@@ -31,7 +31,6 @@ def write_immediate_api(request):
 
     # Fetching the result
     result_set = cur.fetchall()
-    print(result_set)
     if (result_set == []):
         # Returning the HTTP code 204 because the server successfully processed the request, but is not returning any content.
         close_connection(cur, db_context)
