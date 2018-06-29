@@ -7,7 +7,7 @@ def view_device_logs_api(request):
     from_date = request.args.get('from_date')
     to_date = request.args.get('to_date')
     test = False
-    if (device_Id == None):
+    if device_Id == None:
         # Reading the parameters from the body
         data = request.data
         json_data = json.loads(data)
@@ -33,7 +33,7 @@ def view_device_logs_api(request):
 
     valid_input = Validate_Input(device_Id)
 
-    if (not valid_input):
+    if not valid_input:
         # Returning the HTTP code 204 because the server successfully processed the request, but is not returning any content.
         return ('', 204)
 
@@ -46,7 +46,7 @@ def view_device_logs_api(request):
     result_set = cur.fetchall()
     result = []
 
-    if(result_set == []):
+    if result_set == []:
         # Returning the HTTP code 204 because the server successfully processed the request, but is not returning any content.
         close_connection(cur, db_context)
         return ('', 204)
@@ -64,7 +64,7 @@ def view_device_logs_api(request):
         # Checking to see if it is the testing enviornment
         if not test:
             timestamp =  data['Timestamp']
-            if(from_date and to_date):
+            if from_date and to_date:
                 from_date_parse = from_date.split('-') # YYYY MM DD
                 to_date_parse = to_date.split('-') # YYYY MM DD
                 
@@ -117,7 +117,7 @@ def date_check(from_date, to_date, date):
     current_date = datetime.date(date_year, date_month, date_day)
 
     # checking to see if the current date is in between the from and to date
-    if(to_date >= current_date and current_date >= from_date):
+    if to_date >= current_date and current_date >= from_date:
         return True
     else:
         return False      

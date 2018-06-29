@@ -19,7 +19,7 @@ def view_api(request):
 
     valid_input = Validate_Input(customer_Id)
 
-    if (not valid_input):
+    if not valid_input:
         # Returning the HTTP code 204 because the server successfully processed the request, but is not returning any content.
         return ('', 204)
 
@@ -34,7 +34,7 @@ def view_api(request):
     result_set = cur.fetchall()
     result = []
 
-    if(result_set == []):
+    if result_set == []:
         # Returning the HTTP code 204 because the server successfully processed the request, but is not returning any content.
         close_connection(cur, db_context)
         return ('', 204)
@@ -57,7 +57,7 @@ def view_api(request):
     result_device_list = []
 
     # Checking to see if there are any devices associated with the customer
-    if(result_set_device_list != []):
+    if result_set_device_list != []:
         colnames_device_list = [desc[0] for desc in cur.description]
 
         for row in result_set_device_list:

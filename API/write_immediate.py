@@ -82,14 +82,14 @@ def write_immediate_api(request):
 
     Timestamp = str(time.strftime("%m/%d/%Y %H:%M:%S"))
 
-    if (valid_input):
+    if valid_input:
         cur.execute('INSERT INTO public."DeviceEvents" ("DeviceId", "Status_At_Event_Compressor", "Status_At_Event_Fan", "Status_After_Event_Compressor", "Status_After_Event_Fan", "Restart_Check_Compressor", "Restart_Check_Fan", "Timestamp") VALUES (%s, %s, %s, %s, %s, %s, %s, %s)', (device_Id, status_at_event_comp, status_at_event_fan, status_after_event_comp, status_after_event_fan, restart_chk_comp, restart_chk_fan, Timestamp))
         db_context.commit()
 
     # Closing the databse connection before returning the result
     close_connection(cur, db_context)
     
-    if (valid_input):
+    if valid_input:
         # Return the Http 200 status to show a succcess status
         return ('', 200)
     else:

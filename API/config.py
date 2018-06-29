@@ -5,7 +5,7 @@ import re
 import socket
 import urllib.request as req
 import datetime
-from flask import Flask, current_app, abort, request
+from flask import current_app, abort, request
 import uuid
 import hashlib
 
@@ -17,13 +17,13 @@ from Database.connection import open_connection, close_connection
 # Function to return the compressor status
 def conpressor_status_display(status):
     result = ''
-    if (status == 0):
+    if status == 0:
         result = 'No event'
-    elif (status == 1):
+    elif status == 1:
         result = 'Compressor Off (6min)'
-    elif (status == 2):
+    elif status == 2:
         result = 'Compressor Off (12min)'
-    elif (status == 3):
+    elif status == 3:
         result = 'Comp&Fan Off (12min)'
         
     return result
@@ -31,11 +31,11 @@ def conpressor_status_display(status):
 # function to return the write frequency status
 def write_freq_display(status):
     result = ''
-    if (status == 0):
+    if status == 0:
         result = 'No write'
-    elif (status == 10):
+    elif status == 10:
         result = 'Seconds'
-    elif (status == 15 or status == 30 or status == 60):
+    elif status == 15 or status == 30 or status == 60:
         result = 'Seconds power sampling / reporting'
 
     return result

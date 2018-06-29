@@ -4,7 +4,7 @@ def view_device_api(request):
     customer_Id = request.args.get('customer_Id')
     device_Id = request.args.get('device_Id')
     test = False
-    if (customer_Id == None and device_Id == None):
+    if customer_Id == None and device_Id == None:
         # Reading the parameters from the body
         data = request.data
         json_data = json.loads(data)
@@ -21,7 +21,7 @@ def view_device_api(request):
 
     valid_input = Validate_Input(customer_Id, device_Id)
 
-    if (not valid_input):
+    if not valid_input:
         # Returning the HTTP code 204 because the server successfully processed the request, but is not returning any content.
         return ('', 204)
 
@@ -37,7 +37,7 @@ def view_device_api(request):
     result_set = cur.fetchall()
     result = []
 
-    if(result_set == []):
+    if result_set == []:
         # Returning the HTTP code 204 because the server successfully processed the request, but is not returning any content.
         close_connection(cur, db_context)
         return ('', 204)

@@ -15,7 +15,7 @@ def read_api(request):
 
     valid_input = Validate_Input(json_data["mac"],json_data["serial"])
 
-    if (not valid_input):
+    if not valid_input:
         # Returning the HTTP code 204 because the server successfully processed the request, but is not returning any content.
         return ('', 204)
 
@@ -38,7 +38,7 @@ def read_api(request):
     result = []
 
     # Checking to see if we recieve any data
-    if(result_set == []):
+    if result_set == []:
         # Returning the HTTP code 204 because the server successfully processed the request, but is not returning any content.
         close_connection(cur, db_context)
         return ('', 204)
@@ -60,7 +60,7 @@ def read_api(request):
     response['demand_resp_code'] =  conpressor_status_display(result['Compressor_status']) #0=No event /1=Compressor Off (6min)/2=Compressor Off (12min)/ 3=Comp&Fan Off (12min)
     response['demand_resp_time'] = '' #time H:M:S
 
-    if(not test):
+    if not test:
         response['time'] = time.strftime("%H:%M:%S") #current time
     
     response['reporting_url'] = result['Reporting_Url'] #url to report to. (If change, update Chip)
@@ -69,7 +69,7 @@ def read_api(request):
     
     # calculating the delay in milliseconds
     end = int(round(time.time() * 1000))
-    if(not test):
+    if not test:
         response['delay'] = end - start #Delay in milli-seconds after the event.
     
     # Closing the databse connection before returning the result
@@ -82,7 +82,7 @@ def Validate_Input (Mac, Serial):
     valid = True
 
     # Validating the Mac Address
-    if (re.search("^[a-fA-F0-9:]{17}|[a-fA-F0-9]{12}$", Mac) == None):
+    if re.search("^[a-fA-F0-9:]{17}|[a-fA-F0-9]{12}$", Mac) == None:
         valid = False
     
     
@@ -91,7 +91,7 @@ def Validate_Input (Mac, Serial):
     #    valid = False
     
     # Checking to see if the serial number is under the Maximum limit
-    if( len(Serial) > MAX_LENGTH ):
+    if len(Serial) > MAX_LENGTH:
         valid = False
 
     return valid

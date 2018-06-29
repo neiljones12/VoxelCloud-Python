@@ -21,7 +21,7 @@ def login_api(request):
     # Passing the parameters into the Validate_Input method to validate them
     valid_input = Validate_Input(json_data["Customer_Number"],json_data["Password"])
 
-    if (not valid_input):
+    if not valid_input:
         # Returning the HTTP code 204 because the server successfully processed the request, but is not returning any content.
         return ('', 204)
 
@@ -37,7 +37,7 @@ def login_api(request):
     result = []
 
     # Checking to see if we recieve any data
-    if(result_set == []):
+    if result_set == []:
         # Returning the HTTP code 404 because a user could not be found.
         close_connection(cur, db_context)
         return ('', 404)
@@ -51,7 +51,7 @@ def login_api(request):
 
     password_check = check_password(result['PasswordHash'], Password)
     
-    if(password_check):
+    if password_check:
         response['Customer_Id'] = result['Id']
 
         # Closing the databse connection before returning the result
@@ -68,7 +68,7 @@ def Validate_Input (Customer_Number, Password):
     valid = True
 
     # validating against the maximum input length
-    if (len(Customer_Number) > MAX_LENGTH):
+    if len(Customer_Number) > MAX_LENGTH:
         valid = False
 
     return valid
