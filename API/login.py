@@ -103,8 +103,6 @@ def Password_Verification(Password):
             contains_lower = True
         if c in special_characters:
             contains_special_character = True
-        
-        print(c)
 
     # Password is valid it it contains a lowercase character, uppercase character and a special character.
     # All characters are permitted
