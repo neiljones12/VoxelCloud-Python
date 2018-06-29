@@ -22,10 +22,10 @@ def add_device_api(request):
     valid_input = Validate_Input(Name, Compressor_status, Fan_status, Temperature, Ip_Address, Serial_Number, Mac_Address, Communication_Frequency, Installation_Date, Write_Frequency, Write_Time, Reporting_Url)
 
     if (not valid_input):
-        # Returning the HTTP code 204 because the server successfully processed the request, but is not returning any content.
+        # Returning the HTTP code 400. Bad request
         return ('Invalid data, Please check the documentation', 400)
     
-    Temperature_alert = 1 if Temperature > 80 else 0
+    Temperature_alert = '1' if Temperature > 80 else '0'
     Timestamp = str(time.strftime("%m/%d/%Y %H:%M:%S"))
 
     # Checking to see if the test value is passed to the API, If test is true, the testing database is used
@@ -33,16 +33,24 @@ def add_device_api(request):
         test = json_data["test"]
     else:
         test = False
-        
+
     db_context = open_connection(test)
     cur = db_context.cursor()
 
-    cur.execute('INSERT INTO public."Devices"("Name", "Compressor_status", "Fan_status", "Temperature_alert", "Temperature", "Ip_Address", "Serial_Number", "Mac_Address", "Communication_Frequency", "Installation_Date", "Write_Frequency", "Write_Time", "Reporting_Url", "Timestamp") VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s);',(Name, Compressor_status, Fan_status,Temperature_alert, Temperature, Ip_Address, Serial_Number, Mac_Address, Communication_Frequency, Installation_Date, Write_Frequency, Write_Time, Reporting_Url, Timestamp ))
+    Active = 'true'
+    
+    Compressor_status_string = str(Compressor_status)
+    Fan_status_string = str(Fan_status)
+    Temperature_string = str(Temperature)
+    Communication_Frequency_string = str(Communication_Frequency)
+    Write_Frequency_string = str(Write_Frequency)
+    Write_Time_string = str(Write_Time)
+    
+    cur.execute('INSERT INTO public."Devices"("Name", "Compressor_status", "Fan_status", "Temperature_alert", "Temperature", "Ip_Address", "Serial_Number", "Mac_Address", "Communication_Frequency", "Installation_Date", "Write_Frequency", "Write_Time", "Reporting_Url", "Timestamp", "Active") VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s);',(Name, Compressor_status_string, Fan_status_string,Temperature_alert, Temperature_string, Ip_Address, Serial_Number, Mac_Address, Communication_Frequency_string, Installation_Date, Write_Frequency_string, Write_Time_string, Reporting_Url, Timestamp , Active))
     db_context.commit()
 
     # Closing the databse connection before returning the result
     close_connection(cur, db_context)
-
 
     # Return the Http 200 status to show a succcess status
     return ('', 200)

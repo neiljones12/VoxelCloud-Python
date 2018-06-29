@@ -52,7 +52,7 @@ def view_api(request):
             'Location_Name': result['Name']
         }
 
-    query_device_list = 'SELECT * FROM public."Customers" c, public."CustomerDevices" cp, public."Devices" p WHERE c."Id" = cp."CustomerId" AND cp."DeviceId" = p."Id" AND c."Id" = '+customer_Id
+    query_device_list = 'SELECT * FROM public."Customers" c, public."CustomerDevices" cp, public."Devices" p WHERE p."Active" = True AND c."Id" = cp."CustomerId" AND cp."DeviceId" = p."Id" AND c."Id" = '+customer_Id
 
     cur.execute(query_device_list)
 

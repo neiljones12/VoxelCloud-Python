@@ -384,6 +384,34 @@ class TestFunctions(unittest.TestCase):
         
         self.maxDiff = None
         self.assertEqual(str(data),expected_output)
+    
+    # Testing the Add device API with valid inputs
+    def test_delete_device(self):
+        delete_api = url + 'delete_device'
+
+        parameters = {
+                "device_id" : "2"
+            }
+                
+        data = requests.delete(url = delete_api, data = json.dumps(parameters))
+        expected_output = '<Response [200]>'
+        
+        self.maxDiff = None
+        self.assertEqual(str(data),expected_output)
+    
+    # Testing the Add device API with in valid inputs
+    def test_delete_device_invalid(self):
+        delete_api = url + 'delete_device'
+
+        parameters = {
+                "device_id" : "100"
+            }
+                
+        data = requests.delete(url = delete_api, data = json.dumps(parameters))
+        expected_output = '<Response [404]>'
+        
+        self.maxDiff = None
+        self.assertEqual(str(data),expected_output)
 
 if __name__ == '__main__':
     unittest.main()
