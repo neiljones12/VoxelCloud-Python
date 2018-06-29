@@ -23,6 +23,7 @@ Run the following command to install the requirements
 
 ```
 pip install -r requirements.txt
+virtualenv env
 ```
 
 ### Running the application
