@@ -10,8 +10,8 @@ def read_api(request):
     json_data = json.loads(data)
     
     # Saving the parameters as string
-    mac = "'" + json_data["mac"] + "'"
-    serial =  "'" +json_data["serial"]+ "'"
+    mac = json_data["mac"]
+    serial =  json_data["serial"]
 
     valid_input = Validate_Input(json_data["mac"],json_data["serial"])
 
@@ -26,12 +26,12 @@ def read_api(request):
         test = False
 
     # Appending the paramters to the query string
-    query = 'SELECT * FROM public."Devices" WHERE "Mac_Address" = '+mac+' AND "Serial_Number" = '+serial
     db_context = open_connection(test)
     cur = db_context.cursor()
 
     # Executing the query
-    cur.execute(query)
+    # pyscopg2 will sanitize your query
+    cur.execute('SELECT * FROM public."Devices" WHERE "Mac_Address" = %s AND "Serial_Number" = %s', (str(mac), str(serial)))
 
     # Fetching the result
     result_set = cur.fetchall()
@@ -85,9 +85,10 @@ def Validate_Input (Mac, Serial):
     if (re.search("^[a-fA-F0-9:]{17}|[a-fA-F0-9]{12}$", Mac) == None):
         valid = False
     
+    
     # Validating the Serial parameter by allowing only characters and numbers
-    if (re.search("^[A-Za-z0-9]*$", Serial) == None):
-        valid = False
+    #if (re.search("^[A-Za-z0-9]*$", Serial) == None):
+    #    valid = False
     
     # Checking to see if the serial number is under the Maximum limit
     if( len(Serial) > MAX_LENGTH ):
