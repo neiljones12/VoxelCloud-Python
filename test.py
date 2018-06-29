@@ -342,13 +342,13 @@ class TestFunctions(unittest.TestCase):
         add_api = url + 'add_device'
 
         parameters = {
-                "Name": "Device 5",
+                "Name": "Device 7",
                 "Compressor_status": 0,
                 "Fan_status": 0,
                 "Temperature": 70,
                 "Ip_Address": "10.0.0.1",
-                "Serial_Number": "1008",
-                "Mac_Address": "3DF2D6B7C34F",
+                "Serial_Number": "1010",
+                "Mac_Address": "6DF2C9A6B34F",
                 "Communication_Frequency": 24,
                 "Installation_Date": "6/13/2018 01:02:03",
                 "Write_Frequency": 10,
@@ -406,11 +406,11 @@ class TestFunctions(unittest.TestCase):
         delete_api = url + 'delete_device'
 
         parameters = {
-                "device_id" : "9"
+                "device_id" : "ABC"
             }
                 
         data = requests.delete(url = delete_api, data = json.dumps(parameters))
-        expected_output = '<Response [404]>'
+        expected_output = '<Response [400]>'
         
         self.maxDiff = None
         self.assertEqual(str(data),expected_output)
