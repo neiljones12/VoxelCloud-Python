@@ -49,7 +49,7 @@ def login_api(request):
     result = dict(zip(colnames,customer))
     response = {}
 
-    password_check = check_password(result['Password'], Password)
+    password_check = check_password(result['PasswordHash'], Password)
     
     if(password_check):
         response['Customer_Id'] = result['Id']
@@ -66,10 +66,6 @@ def login_api(request):
 
 def Validate_Input (Customer_Number, Password):
     valid = True
-
-    # Validating the Customer_Number parameter by allowing only characters and numbers
-    if (re.search("^[A-Za-z0-9]*$", Customer_Number) == None):
-        valid = False
 
     # validating against the maximum input length
     if (len(Customer_Number) > MAX_LENGTH):
