@@ -1,6 +1,4 @@
-from API.config import open_connection, close_connection, write_freq_display, conpressor_status_display, time, json, status, re
-
-MAX_LENGTH = 15
+from API.config import open_connection, close_connection, write_freq_display, conpressor_status_display, time, json, status, re, MAX_LENGTH
 
 def read_api(request):
     """The Read API returns the current status of a device"""
@@ -40,7 +38,7 @@ def read_api(request):
     result = []
 
     # Checking to see if we recieve any data
-    if result_set == []:
+    if not result_set:
         # Returning the HTTP code 204 because the server successfully processed the request, but is not returning any content.
         close_connection(cur, db_context)
         return ('', 204)

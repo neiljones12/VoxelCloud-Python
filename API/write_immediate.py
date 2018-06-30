@@ -1,6 +1,4 @@
-from API.config import open_connection, close_connection, time, json, status, re
-
-MAX_LENGTH = 15
+from API.config import open_connection, close_connection, time, json, status, re, MAX_LENGTH
 
 def write_immediate_api(request):
     """The Write Immidiate API is used to log each transaction to the database"""
@@ -19,7 +17,7 @@ def write_immediate_api(request):
 
     valid_input = Validate_Input(json_data["mac"],json_data["serial"])
 
-    if (not valid_input):
+    if not valid_input:
         # Returning the HTTP code 204 because the server successfully processed the request, but is not returning any content.
         return ('', 204)
 
@@ -32,7 +30,7 @@ def write_immediate_api(request):
 
     # Fetching the result
     result_set = cur.fetchall()
-    if (result_set == []):
+    if not result_set:
         # Returning the HTTP code 204 because the server successfully processed the request, but is not returning any content.
         close_connection(cur, db_context)
         return ('', 204)
@@ -48,37 +46,37 @@ def write_immediate_api(request):
     status_at_event_comp = str(json_data["status_at_event_comp"])
 
     # status_at_event_comp can only accept 0 or 1.
-    if(int(status_at_event_comp) < 0 or int(status_at_event_comp) > 1):
+    if int(status_at_event_comp) < 0 or int(status_at_event_comp) > 1:
         valid_input = False
 
     status_at_event_fan = str(json_data["status_at_event_fan"])
 
     # status_at_event_fan can only accept 0 or 1.
-    if(int(status_at_event_fan) < 0 or int(status_at_event_fan) > 1):
+    if int(status_at_event_fan) < 0 or int(status_at_event_fan) > 1:
         valid_input = False
 
     status_after_event_comp = str(json_data["status_after_event_comp"])
 
     # status_after_event_comp can only accept 0 or 1.
-    if(int(status_after_event_comp) < 0 or int(status_after_event_comp) > 1):
+    if int(status_after_event_comp) < 0 or int(status_after_event_comp) > 1:
         valid_input = False
 
     status_after_event_fan = str(json_data["status_after_event_fan"])
 
     # status_after_event_fan can only accept 0 or 1.
-    if(int(status_after_event_fan) < 0 or int(status_after_event_fan) > 1):
+    if int(status_after_event_fan) < 0 or int(status_after_event_fan) > 1:
         valid_input = False
 
     restart_chk_comp = str(json_data["restart_chk_comp"])
 
     # restart_chk_comp can only accept 0 or 1.
-    if(int(restart_chk_comp) < 0 or int(restart_chk_comp) > 1):
+    if int(restart_chk_comp) < 0 or int(restart_chk_comp) > 1:
         valid_input = False
 
     restart_chk_fan = str(json_data["restart_chk_fan"])
 
     # restart_chk_fan can only accept 0 or 1.
-    if(int(restart_chk_fan) < 0 or int(restart_chk_fan) > 1):
+    if int(restart_chk_fan) < 0 or int(restart_chk_fan) > 1:
         valid_input = False
 
     Timestamp = str(time.strftime("%m/%d/%Y %H:%M:%S"))
@@ -103,15 +101,15 @@ def Validate_Input (Mac, Serial):
     valid = True
 
     # Validating the Mac Address
-    if (re.search("^[a-fA-F0-9:]{17}|[a-fA-F0-9]{12}$", Mac) == None):
+    if not re.search("^[a-fA-F0-9:]{17}|[a-fA-F0-9]{12}$", Mac):
         valid = False
     
     # Validating the Serial parameter by allowing only characters and numbers
-    if (re.search("^[A-Za-z0-9]*$", Serial) == None):
+    if not re.search("^[A-Za-z0-9]*$", Serial):
         valid = False
     
     # Checking to see if the serial number is under the Maximum limit
-    if( len(Serial) > MAX_LENGTH ):
+    if len(Serial) > MAX_LENGTH:
         valid = False
 
     return valid

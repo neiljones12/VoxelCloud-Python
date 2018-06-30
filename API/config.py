@@ -9,6 +9,7 @@ from flask import current_app, abort, request
 import uuid
 import hashlib
 from Database.connection import open_connection, close_connection
+MAX_LENGTH = 15
 
 def conpressor_status_display(status):
     """ A helper function to interpret the compressor status"""

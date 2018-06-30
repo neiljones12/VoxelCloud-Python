@@ -1,6 +1,4 @@
-from API.config import open_connection, close_connection, time, json, status, re
-
-MAX_LENGTH = 15
+from API.config import open_connection, close_connection, time, json, status, re, MAX_LENGTH
 
 def write_api(request):
     """The Write API updates the current state of the device in the database"""
@@ -83,11 +81,11 @@ def Validate_Input (Mac, Serial):
     valid = True
 
     # Validating the Mac Address
-    if re.search("^[a-fA-F0-9:]{17}|[a-fA-F0-9]{12}$", Mac) == None:
+    if not re.search("^[a-fA-F0-9:]{17}|[a-fA-F0-9]{12}$", Mac):
         valid = False
     
     # Validating the Serial parameter by allowing only characters and numbers
-    if re.search("^[A-Za-z0-9]*$", Serial) == None:
+    if not re.search("^[A-Za-z0-9]*$", Serial):
         valid = False
     
     # Checking to see if the serial number is under the Maximum limit

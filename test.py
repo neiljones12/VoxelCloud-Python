@@ -340,13 +340,13 @@ class TestFunctions(unittest.TestCase):
         add_api = url + 'add_device'
 
         parameters = {
-                "Name": "Device 7",
+                "Name": "Device 8",
                 "Compressor_status": 0,
                 "Fan_status": 0,
                 "Temperature": 70,
                 "Ip_Address": "10.0.0.1",
-                "Serial_Number": "1010",
-                "Mac_Address": "6DF2C9A6B34F",
+                "Serial_Number": "1011",
+                "Mac_Address": "7DF2C9A6B34F",
                 "Communication_Frequency": 24,
                 "Installation_Date": "6/13/2018 01:02:03",
                 "Write_Frequency": 10,

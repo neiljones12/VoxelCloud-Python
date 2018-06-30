@@ -48,7 +48,7 @@ def view_device_logs_api(request):
     result_set = cur.fetchall()
     result = []
 
-    if result_set == []:
+    if not result_set:
         # Returning the HTTP code 204 because the server successfully processed the request, but is not returning any content.
         close_connection(cur, db_context)
         return ('', 204)

@@ -35,7 +35,7 @@ def login_api(request):
     result = []
 
     #f the result_set is [], a user with the customer number doesnt exist and we return a 404 error
-    if result_set == []:
+    if not result_set:
         close_connection(cur, db_context)
         return ('', 404)
 
