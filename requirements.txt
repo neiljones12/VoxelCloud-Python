@@ -18,7 +18,7 @@ pylint==1.9.2
 requests==2.19.1
 six==1.11.0
 urllib3==1.23
-Werkzeug==0.14.1
+Werkzeug==0.15.3
 wrapt==1.10.11
 alembic==0.9.9
 aniso8601==3.0.2
